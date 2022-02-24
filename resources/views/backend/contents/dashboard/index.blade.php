@@ -28,12 +28,12 @@
                                             </div>
                                         </div>
                                         <div class="data">
-                                            <div class="amount">{{ number_format($x, 0, '', '.') }} đ</div>
+                                            <div class="amount">100 đ</div>
                                             <div class="card-title mt-4">
                                                 <h6 class="title">Doanh thu tháng {{ $now }} </h6>
                                             </div>
                                             <div class="doanhthu" style="color: #fff; font-size: 20px;">
-                                                {{ number_format($thismonth, 0, '', '.') }} đ
+                                                {{-- {{ number_format($thismonth, 0, '', '.') }} đ --}}
                                             </div>
                                         </div>
                                         

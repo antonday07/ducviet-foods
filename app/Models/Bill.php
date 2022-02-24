@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Bill extends Model
 {
+    protected $table = 'bills';
+
     protected $fillable = ["id","Name","Phone","Address","Email","Status","total"];
     public function user() {
         return $this->belongsTo(User::class);
