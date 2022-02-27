@@ -31,7 +31,7 @@ class OrderController extends Controller
     public function detail($id)
     {
         $bill = Bill::find($id);
-        $billdetail = $bill->billdetails;
+        $billdetail = $bill->billDetails;
         return view('backend.contents.order.detail', compact('bill', 'billdetail'));
     }
     public function changeStatus(Request $request)

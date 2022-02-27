@@ -1,0 +1,52 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&family=Public+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap');
+
+$break-small:320px;
+$break-mobile: 400px;
+$break-tablet:768px;
+$break-tab-pro:1024px;
+$break-desktop-medium:1200px;
+$break-desktop-large: 1400px;
+$break-desktop-1600: 1600px;
+#main-wrapper[data-layout=vertical] .topbar .top-navbar .navbar-header[data-logobg=skin5], #main-wrapper[data-layout=horizontal] .topbar .top-navbar .navbar-header[data-logobg=skin5]{
+    background: linear-gradient(0deg, #87CEEB 7.29%, rgba(255, 255, 255, 0) 304.17%);
+}
+html{
+    background: #EDF2F8;
+}
+body {
+    font-family: 'Public Sans', sans-serif;
+}
+.table-custom {
+    .table thead tr{
+        background: #D4E1F1;
+        border-radius: 4px;
+        th{
+            font-family: 'Public Sans', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 130%;
+            color: #002E45;
+        }
+    }
+    .table tbody tr{
+        background: #FFFFFF;
+        border-radius: 4px;
+        border-top: 9px solid #EDF2F8;
+        font-family: 'Public Sans', sans-serif;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 130%;
+        color: #242424;
+    
+    }
+    .table tbody tr td{
+       vertical-align: middle;
+    
+    }
+}
+
+#flasher-container-top-right {
+    z-index: 10000;
+}

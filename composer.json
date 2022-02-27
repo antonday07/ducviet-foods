@@ -18,7 +18,9 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "2.4",
         "livewire/livewire": "^2.10",
-        "pusher/pusher-php-server": "^7.0"
+        "php-flasher/flasher-laravel": "^0.9.6",
+        "pusher/pusher-php-server": "^7.0",
+        "yajra/laravel-datatables-oracle": "^9.19"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

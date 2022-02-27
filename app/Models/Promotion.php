@@ -8,7 +8,7 @@ class Promotion extends Model
 {
     protected $table = 'promotions';
 
-    protected $fillable = ["id", "name", "description", "percent"];
+    protected $fillable = ["name", "type", "price", "date_from", "date_expiry", "description"];
 
     public function products() {
         return $this->hasMany(Product::class);

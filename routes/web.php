@@ -73,12 +73,13 @@ Route::group(['middleware' => ['auth:admin']], function () {
         });
         Route::group(['prefix' => 'product'], function () {
             Route::get('index', 'Backend\ProductController@index')->name('product.index');
+            Route::get('datatable', 'Backend\ProductController@getDatatable')->name('product.datatable');
             Route::get('create', 'Backend\ProductController@create')->name('product.create');
             Route::post('create', 'Backend\ProductController@store')->name('product.store');
 
             Route::get('edit/{id}', 'Backend\ProductController@edit')->name('product.edit');
             Route::post('edit/{id}', 'Backend\ProductController@update')->name('product.update');
-            Route::get('delete/{id}', 'Backend\ProductController@delete')->name('product.delete');
+            Route::delete('delete/{id}', 'Backend\ProductController@delete')->name('product.delete');
         });
         Route::group(['prefix' => 'category'], function () {
             Route::get('index', 'Backend\CategoryController@index')->name('category.index');
@@ -87,7 +88,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
 
             Route::get('edit/{id}', 'Backend\CategoryController@edit')->name('category.edit');
             Route::post('edit/{id}', 'Backend\CategoryController@update')->name('category.update');
-            Route::get('delete/{id}', 'Backend\CategoryController@delete')->name('category.delete');
+            Route::delete('delete/{id}', 'Backend\CategoryController@delete')->name('category.delete');
         });
     });
 });

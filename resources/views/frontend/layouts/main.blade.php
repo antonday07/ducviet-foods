@@ -7,6 +7,7 @@
     <title>@yield('title', "Vinmart+")</title>
     <meta name="robots" content="noindex, follow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Open Graph (OG) meta tags are snippets of code that control how URLs are displayed when shared on social media  -->
 
@@ -89,8 +90,8 @@
     {{-- <script src="{{asset('urdan/js/plugins/imagesloaded.pkgd.min.js')}}"></script> --}}
     {{-- <script src="{{asset('urdan/js/plugins/isotope.pkgd.min.js')}}"></script> --}}
     <!-- Main JS -->
-
     @yield('js')
+    @stack('after-scripts')
 </body>
 
 </html>

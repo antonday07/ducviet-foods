@@ -8,11 +8,13 @@ class Bill extends Model
 {
     protected $table = 'bills';
 
-    protected $fillable = ["id","Name","Phone","Address","Email","Status","total"];
-    public function user() {
+    protected $fillable = ["id", "Name", "Phone", "Address", "Email", "Status", "total"];
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
-    public function billdetails() {
+    public function billDetails()
+    {
         return $this->hasMany(BillDetail::class);
     }
 }
