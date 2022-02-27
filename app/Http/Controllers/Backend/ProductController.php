@@ -20,15 +20,11 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::paginate(5);
-        $categories = ProductCategory::all();
-        return view('backend.contents.product.index', compact('products', 'categories'));
+        return view('backend.contents.product.index');
     }
 
     public function getDatatable(Request $request)
     {
-
-        
         if($request->ajax()){
             $products = Product::all();
             return DataTables::of($products)

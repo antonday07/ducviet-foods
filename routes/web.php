@@ -57,8 +57,13 @@ Route::group(['middleware' => ['auth:admin']], function () {
         });
         Route::group(['prefix' => 'promotion'], function () {
             Route::get('index', 'Backend\PromotionController@index')->name('promotion.index');
+            Route::get('datatable', 'Backend\PromotionController@getDatatable')->name('promotion.datatable');
             Route::get('create', 'Backend\PromotionController@create')->name('promotion.create');
-            Route::post('submitcreate', 'Backend\PromotionController@submitcreate')->name('promotion.submitcreate');
+            Route::post('create', 'Backend\PromotionController@store')->name('promotion.store');
+
+            Route::get('edit/{id}', 'Backend\PromotionController@edit')->name('promotion.edit');
+            Route::post('edit/{id}', 'Backend\PromotionController@update')->name('promotion.update');
+            Route::delete('delete/{id}', 'Backend\PromotionController@delete')->name('promotion.delete');
         });
         Route::group(['prefix' => 'order'], function () {
             Route::get('index', 'Backend\OrderController@index')->name('order.index');
@@ -83,6 +88,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
         });
         Route::group(['prefix' => 'category'], function () {
             Route::get('index', 'Backend\CategoryController@index')->name('category.index');
+            Route::get('datatable', 'Backend\CategoryController@getDatatable')->name('category.datatable');
             Route::get('create', 'Backend\CategoryController@create')->name('category.create');
             Route::post('create', 'Backend\CategoryController@store')->name('category.store');
 

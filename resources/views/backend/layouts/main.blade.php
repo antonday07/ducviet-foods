@@ -17,6 +17,10 @@
     <link id="skin-default" rel="stylesheet" href="{{ asset('/backend/css/theme.css?ver=2.4.0') }}">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.standalone.min.css">
+
     <link rel="stylesheet" href="{{ asset('/backend/css/dashlite.css?ver=2.4.0') }}">
     <link rel="stylesheet" href="{{ asset('/backend/css/style.css') }}">
     

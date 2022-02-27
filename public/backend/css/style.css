@@ -33,4 +33,9 @@ body {
 #flasher-container-top-right {
   z-index: 10000; }
 
+.group-date .icon-calendar {
+  position: absolute;
+  top: 55%;
+  right: 0; }
+
 /*# sourceMappingURL=style.css.map */

@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-between">
+<div class="d-flex justify-content-center">
     <a href="{{route('product.edit', [$product->id])}}" class="btn btn-info "><i class="fas fa-pencil-alt"></i></a>
     {{-- <a href="{{route('tours.show', [$tour->id])}}" class="btn btn-primary "><i class="fa fa-eye"></i></a> --}}
     

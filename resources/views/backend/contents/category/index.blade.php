@@ -28,79 +28,69 @@
                     </div><!-- .nk-block-between -->
                 </div><!-- .nk-block-head -->
                 <div class="nk-block">
-                    <div class="nk-tb-list is-separate mb-3">
-                        <div class="nk-tb-item nk-tb-head">
-                            <div class="nk-tb-col nk-tb-col-check">
-                                <div class="custom-control custom-control-sm custom-checkbox notext">
-                                    <input type="checkbox" class="custom-control-input" id="uid">
-                                    <label class="custom-control-label" for="uid"></label>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="list-products">
+                                <div class="table-custom">
+                                    <table id="list_categories" class="table display" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th scope="col">Tên danh mục</th>
+                                                <th scope="col">Mô tả</th>
+                                                <th scope="col" class="text-center">Hành động</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
                                 </div>
                             </div>
-                            <div class="nk-tb-col"><span class="sub-text">Tên danh mục</span></div>
-                            <div class="nk-tb-col tb-col-mb"><span class="sub-text">Thông tin về danh mục</span></div>
-                            <div class="nk-tb-col nk-tb-col-tools">
-                                
-                            </div>
-                        </div><!-- .nk-tb-item -->
-                        @foreach ($categories as $category)
-                            <div class="nk-tb-item">
-                            <div class="nk-tb-col nk-tb-col-check">
-                                <div class="custom-control custom-control-sm custom-checkbox notext">
-                                    <input type="checkbox" class="custom-control-input" id="uid1">
-                                    <label class="custom-control-label" for="uid1"></label>
-                                </div>
-                            </div>
-                            <div class="nk-tb-col">
-                               
-                                    <div class="user-card">
-                                
-                                        <div class="user-info">
-                                            <span class="tb-lead">{{$category->name}} <span class="dot dot-success d-md-none ml-1"></span></span>
-                                            
-                                        </div>
-                                    </div>
-                                
-                            </div>
-                            <!-- Email -->
-                            <div class="nk-tb-col tb-col-mb">
-                                <span class="tb-amount">{{ $category->description }}</span>
-                            </div>
-                            
-                            
-                            <div class="nk-tb-col nk-tb-col-tools">
-                                <ul class="nk-tb-actions gx-1">
-                                    
-                                    <li>
-                                        <div class="drodown">
-                                            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-toggle="dropdown"><i class="fas fa-caret-down"></i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <ul class="link-list-opt no-bdr">
-                                                    <li><a href="{{ route('category.edit', $category->id) }}"><span>Sửa danh mục</span></a></li>
-                                                    
-                                                    <li><a href="{{ route('category.delete', $category->id) }}"><span>Xóa danh mục</span></a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div><!-- .nk-tb-item -->
-                        @endforeach
-                        
-                    </div><!-- .nk-tb-list -->
-                    <div class="card">
-                        <div class="card-inner">
-                            <div class="nk-block-between-md g-3">
-                                <div class="g">
-                                    {{ $categories->links() }}
-                                </div>
-                                
-                            </div><!-- .nk-block-between -->
                         </div>
                     </div>
                 </div><!-- .nk-block -->
+
             </div>
         </div>
     </div>
 </div>
 @endsection
+@push('after-scripts')
+    <script>
+        
+        // JS script only for render datatable
+        var listCategories = $('#list_categories').DataTable({
+            responsive: true,
+            processing: true,
+            serverSide: true,
+            "bLengthChange" : false,
+            searching: false,
+            "ordering": false,
+            pageLength: 5,
+            ajax: {
+                type: "GET",
+                url: '{{ route('category.datatable') }}',
+                data: function(d){
+                    d._token = '{{ csrf_token() }}'
+                    // d.type = $('.group-appointment .nav-link.active').attr('data-type'),
+                    // d.search = $("#filter_search").val(),
+                    // d.start_time = $('#appointment_start_time').val(),
+                    // d.end_time = $('#appointment_end_time').val()
+                    // d.type_section = arrTypeSection,
+                    // d.gender = $("#gender_filter option:selected" ).val(),
+                    // d.charge_start = $('#charge_start').val(),
+                    // d.charge_end = $('#charge_end').val()
+                },
+            },
+            columns: [
+                {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                {data: 'name', name: 'name'},
+                {data: 'description', name: 'description'},
+                { data: 'action', name:'action'}
+            ]
+        });
+
+        // delete item product
+        $('body').on('click', '.btn-delete-item', deleteConfirmation);
+
+
+    </script>
+@endpush
