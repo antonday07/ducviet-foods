@@ -18,5 +18,9 @@ return [
         1 => 'Đang bán',
         2 => 'Tạm dừng bán',
         3 => 'Hết hàng'
+    ],
+    'role_employee' => [
+        1 => 'Admin',
+        2 => 'Nhân viên',
     ]
 ];

@@ -27,10 +27,13 @@ class PromotionController extends Controller
                 return $item->description;
             })
             ->addColumn('type', function($item){
-                return $item->type;
+                $badgeName = $item->type == 1 ? 'badge-primary' : 'badge-info';
+                $textName = $item->type == 1 ? 'Giảm giá' : 'Phần trăm';
+                return '<span class="badge ' . $badgeName . ' ">' . $textName . '</span>';
             })
             ->addColumn('price', function($item){
-                return $item->price;
+                $type = $item->type == 1 ? ' VNĐ' : '%';
+                return $item->price . $type;
             })
             ->addColumn('date_from', function($item){
                 return $item->date_from;
@@ -44,7 +47,7 @@ class PromotionController extends Controller
                     'routeDelete' => route('promotion.delete', [$item->id]),
                 ]);
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['action', 'type'])
             ->make(true);
         }
     }
@@ -54,9 +57,12 @@ class PromotionController extends Controller
     public function store(PromotionRequest $request) {
         $data = $request->all();
         $new_promo = Promotion::create($data);
+        
         if ($new_promo) {
+            flasher(__('web.action_success', ['action' => 'Thêm mới khuyến mãi']), 'success');
             return redirect()->route('promotion.index');
         } else {
+            flasher(__('web.action_failed', ['action' => 'Thêm mới khuyến mãi']), 'error');
             return 'Error!!';
         }
     }
@@ -71,10 +77,10 @@ class PromotionController extends Controller
         $promotion = Promotion::where('id', $id)->update($data);
 
         if ($promotion) {
-            flasher(__('web.action_success', ['action' => 'Cập nhập danh mục']), 'success');
+            flasher(__('web.action_success', ['action' => 'Cập nhập khuyến mãi']), 'success');
             return redirect()->route('promotion.index');
         } else {
-            flasher(__('web.action_failed', ['action' => 'Cập nhập danh mục']), 'error');
+            flasher(__('web.action_failed', ['action' => 'Cập nhập khuyến mãi']), 'error');
             return 'Error!!';
         }
     }

@@ -8,5 +8,5 @@ class Unit extends Model
 {
     protected $table = 'units';
 
-    protected $fillable = ["name", "code"];
+    protected $fillable = ["name", "code", "description"];
 }

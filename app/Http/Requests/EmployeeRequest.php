@@ -23,10 +23,12 @@ class EmployeeRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' =>'min:5' ,'max:225' ,'string',
-            'password' =>'min:8',
-            'email'=>'min:5','email'
+        return [            
+            'name' => 'required|min:5|max:225|string',
+            'password' =>'required|string|min:8|max:50',
+            'email'=>'required|min:5|email|max:50',
+            'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10|max:12',
+            'address' => 'required|string|max:255'
         ];
     }
 }

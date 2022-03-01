@@ -73,8 +73,13 @@ Route::group(['middleware' => ['auth:admin']], function () {
         });
         Route::group(['prefix' => 'employee'], function () {
             Route::get('index', 'Backend\EmployeeController@index')->name('employee.index');
+            Route::get('datatable', 'Backend\EmployeeController@getDatatable')->name('employee.datatable');
             Route::get('create', 'Backend\EmployeeController@create')->name('employee.create');
-            Route::post('submitcreate', 'Backend\EmployeeController@submitcreate')->name('employee.submitcreate');
+            Route::post('create', 'Backend\EmployeeController@store')->name('employee.store');
+
+            Route::get('edit/{id}', 'Backend\EmployeeController@edit')->name('employee.edit');
+            Route::post('edit/{id}', 'Backend\EmployeeController@update')->name('employee.update');
+            Route::delete('delete/{id}', 'Backend\EmployeeController@delete')->name('employee.delete');
         });
         Route::group(['prefix' => 'product'], function () {
             Route::get('index', 'Backend\ProductController@index')->name('product.index');
@@ -95,6 +100,29 @@ Route::group(['middleware' => ['auth:admin']], function () {
             Route::get('edit/{id}', 'Backend\CategoryController@edit')->name('category.edit');
             Route::post('edit/{id}', 'Backend\CategoryController@update')->name('category.update');
             Route::delete('delete/{id}', 'Backend\CategoryController@delete')->name('category.delete');
+        });
+
+        Route::group(['prefix' => 'unit'], function () {
+            Route::get('index', 'Backend\UnitController@index')->name('unit.index');
+            Route::get('datatable', 'Backend\UnitController@getDatatable')->name('unit.datatable');
+            Route::get('create', 'Backend\UnitController@create')->name('unit.create');
+            Route::post('create', 'Backend\UnitController@store')->name('unit.store');
+
+            Route::get('edit/{id}', 'Backend\UnitController@edit')->name('unit.edit');
+            Route::post('edit/{id}', 'Backend\UnitController@update')->name('unit.update');
+            Route::delete('delete/{id}', 'Backend\UnitController@delete')->name('unit.delete');
+        });
+
+        
+        Route::group(['prefix' => 'supplier'], function () {
+            Route::get('index', 'Backend\SupplierController@index')->name('supplier.index');
+            Route::get('datatable', 'Backend\SupplierController@getDatatable')->name('supplier.datatable');
+            Route::get('create', 'Backend\SupplierController@create')->name('supplier.create');
+            Route::post('create', 'Backend\SupplierController@store')->name('supplier.store');
+
+            Route::get('edit/{id}', 'Backend\SupplierController@edit')->name('supplier.edit');
+            Route::post('edit/{id}', 'Backend\SupplierController@update')->name('supplier.update');
+            Route::delete('delete/{id}', 'Backend\SupplierController@delete')->name('supplier.delete');
         });
     });
 });

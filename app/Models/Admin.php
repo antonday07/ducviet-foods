@@ -13,6 +13,8 @@ class Admin extends Authenticatable
     use Notifiable;
 
     protected $table = 'employees';
+    const ADMIN = 1;
+    const EMPLOYEE = 2;
 
     /**
      * The attributes that are mass assignable.
@@ -20,7 +22,7 @@ class Admin extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'phone', 'address', 'role'
     ];
 
     /**

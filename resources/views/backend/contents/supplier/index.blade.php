@@ -8,36 +8,20 @@
                 <div class="nk-block-head nk-block-head-sm">
                     <div class="nk-block-between">
                         <div class="nk-block-head-content">
-                            <h3 class="nk-block-title page-title">Nhân viên</h3>
+                            <h3 class="nk-block-title page-title">Nhà cung cấp</h3>
                         </div><!-- .nk-block-head-content -->
                         <div class="nk-block-head-content">
                             <div class="toggle-wrap nk-block-tools-toggle">
-                                <a href="#" class="btn btn-icon btn-trigger toggle-expand mr-n1" data-target="more-options"><em class="icon ni ni-more-v"></em></a>
-                                <div class="toggle-expand-content" data-content="more-options">
+                                <a href="#" class="btn btn-icon btn-trigger toggle-expand mr-n1"
+                                    data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
+                                <div class="toggle-expand-content" data-content="pageMenu">
                                     <ul class="nk-block-tools g-3">
-                                        <li>
-                                            <div class="form-control-wrap">
-                                                <div class="form-icon form-icon-right">
-                                                    <i class="fas fa-search"></i>
-                                                </div>
-                                                <input type="text" class="form-control" id="default-04" placeholder="Search by name">
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="drodown">
-                                                <a href="#" class="  btn btn-outline-light btn-white" data-toggle="dropdown">Status</a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <ul class="link-list-opt no-bdr">
-                                                        <li><a href="#"><span>Actived</span></a></li>
-                                                        <li><a href="#"><span>Inactived</span></a></li>
-                                                        <li><a href="#"><span>Blocked</span></a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </li>
+                                        
                                         <li class="nk-block-tools-opt">
-                                            
-                                            <a href="{{ route('employee.create')}}" class="btn btn-primary d-none d-md-inline-flex"><i class="fas fa-plus"></i><span>Add</span></a>
+
+                                            <a href="{{ route('supplier.create') }}"
+                                                class="btn btn-primary d-none d-md-inline-flex"><i
+                                                    class="fas fa-plus"></i><span>Add Supplier</span></a>
                                         </li>
                                     </ul>
                                 </div>
@@ -50,15 +34,14 @@
                         <div class="col-sm-12">
                             <div class="list-products">
                                 <div class="table-custom">
-                                    <table id="list_employee" class="table display" style="width:100%">
+                                    <table id="list_supplier" class="table display" style="width:100%">
                                         <thead>
                                             <tr>
                                                 <th>No</th>
-                                                <th scope="col">Tên nhân viên</th>
+                                                <th scope="col">Tên nhà cung cấp</th>
                                                 <th scope="col">Email</th>
                                                 <th scope="col">Điện thoại</th>
                                                 <th scope="col">Địa chỉ</th>
-                                                <th scope="col">Quyền</th>
                                                 <th scope="col" class="text-center">Hành động</th>
                                             </tr>
                                         </thead>
@@ -78,7 +61,7 @@
     <script>
         
         // JS script only for render datatable
-        var listEmployees = $('#list_employee').DataTable({
+        var listSupplier = $('#list_supplier').DataTable({
             responsive: true,
             processing: true,
             serverSide: true,
@@ -88,7 +71,7 @@
             pageLength: 5,
             ajax: {
                 type: "GET",
-                url: '{{ route('employee.datatable') }}',
+                url: '{{ route('supplier.datatable') }}',
                 data: function(d){
                     d._token = '{{ csrf_token() }}'
                     // d.type = $('.group-appointment .nav-link.active').attr('data-type'),
@@ -107,7 +90,6 @@
                 {data: 'email', name: 'email'},
                 {data: 'phone', name: 'phone'},
                 {data: 'address', name: 'address'},
-                {data: 'role', name: 'role'},
                 { data: 'action', name:'action'}
             ]
         });
