@@ -20,7 +20,7 @@
                                                 <div class="form-icon form-icon-right">
                                                     <i class="fas fa-search"></i>
                                                 </div>
-                                                <input type="text" class="form-control" id="default-04" placeholder="Search by name">
+                                                <input type="text" class="form-control" id="filter_search" placeholder="Search by name">
                                             </div>
                                         </li>
                                         <li>
@@ -90,9 +90,8 @@
                 type: "GET",
                 url: '{{ route('employee.datatable') }}',
                 data: function(d){
-                    d._token = '{{ csrf_token() }}'
-                    // d.type = $('.group-appointment .nav-link.active').attr('data-type'),
-                    // d.search = $("#filter_search").val(),
+                    d._token = '{{ csrf_token() }}',
+                    d.search = $("#filter_search").val()
                     // d.start_time = $('#appointment_start_time').val(),
                     // d.end_time = $('#appointment_end_time').val()
                     // d.type_section = arrTypeSection,
@@ -111,6 +110,10 @@
                 { data: 'action', name:'action'}
             ]
         });
+
+        $('#filter_search').on('keyup', function() {
+            listEmployees.draw();
+        })
 
         // delete item product
         $('body').on('click', '.btn-delete-item', deleteConfirmation);

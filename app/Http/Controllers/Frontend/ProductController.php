@@ -13,7 +13,8 @@ class ProductController extends Controller
 {
     public function product(Request $request)
     {
-        $products = Product::paginate(8);
+        $products = Product::with('promotion')->paginate(8);
+
         $categories = ProductCategory::select('id', 'name')->get();
         return view('frontend.contents.shopping', compact('products', 'categories'));
     }

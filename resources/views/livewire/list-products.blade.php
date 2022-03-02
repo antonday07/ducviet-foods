@@ -2,10 +2,10 @@
         <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200">
             <div class="product-img img-zoom mb-25">
                 <a href="{{route('detail', $product->id)}}">
-                    <img src="{{ asset($product->thumbnail)  }}" alt="">
+                    <img src="{{ $product->image  }}" alt="">
                 </a>
                 <div class="product-badge badge-top badge-right badge-pink">
-                    <span>-{{ $product->promotion->percent }}%</span>
+                    <span>-{{  !empty($product->promotion) ? $product->promotion->price : '' }}%</span>
                 </div>
                 
                 <div class="product-action-2-wrap">
@@ -17,11 +17,15 @@
             <div class="product-content">
                 <h3><a href="{{route('detail', $product->id)}}">{{ $product->name }}</a></h3>
                 <div class="product-price">
-                    @if ($product->promotion->percent == 0)
-                        <span class="old-price-current"> {{ number_format($product->price, 0, '', '.') }} đ </span>
-                    @else
-                        <span class="old-price"> {{ number_format($product->price, 0, '', '.') }} đ </span>
-                        <span class="new-price"> {{ number_format($product->price - ($product->price*$product->promotion->percent)/100, 0, '', '.') }} đ </span>
+                    @if ($product->promotion)
+                        @if ($product->promotion->price == 0)
+                            <span class="old-price-current"> {{ number_format($product->retail_price, 0, '', '.') }} đ </span>
+                        @else
+                            <span class="old-price"> {{ number_format($product->retail_price, 0, '', '.') }} đ </span>
+                            <span class="new-price"> {{ number_format($product->retail_price - ($product->retail_price * $product->promotion->price) /100, 0, '', '.') }} đ </span>
+                        @endif
+                    @else 
+                        <p>No price coupon</p>    
                     @endif
                 </div>
             </div>

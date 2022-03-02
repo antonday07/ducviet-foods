@@ -18,10 +18,10 @@ class EmployeeController extends Controller
         return view('backend.contents.employee.index', compact('employees'));
     }
 
-    public function getDatatable(Request $request)
+    public function getDatatable(Request $request, Admin $employee)
     {
         if($request->ajax()){
-            $employees = Admin::where('role', Admin::EMPLOYEE)->get();
+            $employees = $employee->findAllEmployee($request);
             return DataTables::of($employees)
             ->addIndexColumn()
             ->addColumn('name', function($item){
@@ -57,7 +57,7 @@ class EmployeeController extends Controller
     public function store(EmployeeRequest $request)
     {
         $data = $request->all();
-    
+        
         unset($data['_token']);
         $data['role'] = Admin::EMPLOYEE;
         $data['password'] = Hash::make($request->password);
@@ -72,7 +72,8 @@ class EmployeeController extends Controller
     }
 
     public function edit($id) {
-        return view('backend.contents.employee.edit');
+        $employee = Admin::find($id);
+        return view('backend.contents.employee.edit', compact('employee'));
     }
     public function update(EmployeeRequest $request, $id){
         $data = $request->all();
