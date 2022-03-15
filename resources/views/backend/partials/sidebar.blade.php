@@ -17,39 +17,69 @@
                 <ul class="nk-menu">
                     <li class="nk-menu-item">
                         <a href="/admin" class="nk-menu-link">
-                            <span class="nk-menu-icon"><i class="fas fa-columns"></i></span>
+                            <span class="nk-menu-icon"><i class="icon ni ni-tile-thumb-fill"></i></span>
                             <span class="nk-menu-text">Bảng điều khiển</span>
                         </a>
                     </li>
-                    {{-- <li class="nk-menu-item">
+                    <li class="nk-menu-item">
                         <a href="{{route('order.index')}}" class="nk-menu-link">
                             <span class="nk-menu-icon"><i class="fas fa-shopping-bag"></i></span>
                             <span class="nk-menu-text">Đơn hàng</span>
                         </a>
-                    </li> --}}
-                    <li class="nk-menu-item">
-                        <a href="{{ route('category.index') }}" class="nk-menu-link">
-                            <span class="nk-menu-icon"><i class="fas fa-box-open"></i></span>
-                            <span class="nk-menu-text">Danh mục</span>
-                        </a>
                     </li>
-                    <li class="nk-menu-item">
-                        <a href="{{ route('unit.index') }}" class="nk-menu-link">
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon"><i class="fas fa-box-open"></i></span>
-                            <span class="nk-menu-text">Đơn vị tính</span>
+                            <span class="nk-menu-text">Dữ liệu sản phẩm</span>
                         </a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item">
+                                <a href="{{ route('category.index') }}" class="nk-menu-link">
+                                    <span class="nk-menu-icon"><i class="fas fa-box-open"></i></span>
+                                    <span class="nk-menu-text">Danh mục</span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{ route('unit.index') }}" class="nk-menu-link">
+                                    <span class="nk-menu-icon"><i class="fas fa-box-open"></i></span>
+                                    <span class="nk-menu-text">Đơn vị tính</span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{ route('promotion.index') }}" class="nk-menu-link">
+                                    <span class="nk-menu-icon"><i class="fas fa-box-open"></i></span>
+                                    <span class="nk-menu-text">Khuyến mãi</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li class="nk-menu-item">
-                        <a href="{{ route('promotion.index') }}" class="nk-menu-link">
-                            <span class="nk-menu-icon"><i class="fas fa-box-open"></i></span>
-                            <span class="nk-menu-text">Khuyến mãi</span>
-                        </a>
-                    </li>
+               
                     <li class="nk-menu-item">
                         <a href="{{ route('product.index')}}" class="nk-menu-link">
                             <span class="nk-menu-icon"><i class="fas fa-cube"></i></span>
                             <span class="nk-menu-text">Sản phẩm</span>
                         </a>
+                    </li>
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-icon"><i class="fas fa-box-open"></i></span>
+                            <span class="nk-menu-text">Dữ liệu nhập hàng</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item">
+                                <a href="{{ route('bill.import.index') }}" class="nk-menu-link">
+                                    <span class="nk-menu-icon"><i class="fas fa-box-open"></i></span>
+                                    <span class="nk-menu-text">Nhập hàng</span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{ route('unit.index') }}" class="nk-menu-link">
+                                    <span class="nk-menu-icon"><i class="fas fa-box-open"></i></span>
+                                    <span class="nk-menu-text">Sản phẩm đã nhập</span>
+                                </a>
+                            </li>
+                         
+                        </ul>
                     </li>
                     <li class="nk-menu-item">
                         <a href="{{ route('supplier.index')}}" class="nk-menu-link">
@@ -57,12 +87,12 @@
                             <span class="nk-menu-text">Nhà cung cấp</span>
                         </a>
                     </li>
-                    {{-- <li class="nk-menu-item">
+                    <li class="nk-menu-item">
                         <a href="{{ route('customer.index') }}" class="nk-menu-link">
                             <span class="nk-menu-icon"><i class="fas fa-user-friends"></i></span>
                             <span class="nk-menu-text">Khách hàng</span>
                         </a>
-                    </li> --}}
+                    </li>
 
                     <li class="nk-menu-item">
                         <a href="{{ route('employee.index') }}" class="nk-menu-link">

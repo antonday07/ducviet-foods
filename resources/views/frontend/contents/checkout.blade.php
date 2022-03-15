@@ -15,8 +15,8 @@
                                         <div class="billing-info mb-20">
                                             <label>Tên người nhận<abbr class="required"
                                                     title="required">*</abbr></label>
-                                            <input type="text" name="Name" />
-                                            @error('Name')
+                                            <input type="text" name="name" />
+                                            @error('name')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
@@ -25,8 +25,8 @@
                                         <div class="billing-info mb-20">
                                             <label>Số điện thoại
                                                 <abbr class="required" title="required">*</abbr></label>
-                                            <input type="text" name="Phone" />
-                                            @error('Phone')
+                                            <input type="text" name="phone" />
+                                            @error('phone')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
@@ -41,8 +41,8 @@
                                         <div class="billing-info mb-20">
                                             
                                             <input class="billing-address" placeholder="Số nhà và tên đường" type="text"
-                                                name="Address" />
-                                            @error('Address')
+                                                name="address" />
+                                            @error('address')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
@@ -53,8 +53,8 @@
                                         <div class="billing-info mb-20">
                                             <label>Địa chỉ email
                                                 <abbr class="required" title="required">*</abbr></label>
-                                            <input type="text" name="Email" />
-                                            @error('Email')
+                                            <input type="text" name="email" />
+                                            @error('email')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
@@ -75,31 +75,39 @@
                                         <ul>
                                             <li>Sản phẩm <span>Giá</span></li>
                                         </ul>
-                                    </div>
-                                    @foreach ($data as $x)
+                                    </div>                                                                  
+                            
+                                    @php
+                                        $total = 0;
+                                    @endphp
+                                    @foreach ((array) session('cart') as $id => $product)
+                                    
+                                        @php                                    
+                                            $total += $product['price'] * $product['quantity'];
+                                        @endphp
                                         <div class="your-order-middle">
                                             <ul>
-                                                <li>{{ $x->name }} x {{ $x->qty }} <span>{{ $x->price }} đ
+                                                <li>{{ $product['name'] }} x {{ $product['quantity'] }} <span>{{ number_format($product['price'], 0,'', '.')  }} đ
                                                     </span></li>
                                             </ul>
                                         </div>
+                                        <div class="your-order-info order-subtotal">
+                                            <ul>
+                                                <li>Tạm tính <span>{{ number_format($product['price'] * $product['quantity'], 0,'', '.') }}đ </span></li>
+                                            </ul>
+                                        </div>
                                     @endforeach
-                                    <div class="your-order-info order-subtotal">
+                                   
+                                    <div class="your-order-info order-total mt-3">
                                         <ul>
-                                            <li>Tạm tính <span>{{ Cart::total() }}đ </span></li>
-                                        </ul>
-                                    </div>
-                                    
-                                    <div class="your-order-info order-total">
-                                        <ul>
-                                            <li>Tổng tiền <span>{{ $total }}đ </span></li>
+                                            <li>Tổng tiền <span>{{ number_format($total  , 0,'', '.') }}đ </span></li>
                                         </ul>
                                     </div>
                                 </div>
                                 <h3 class="mt-5">Phương thức thanh toán</h3>
                                 <div class="payment-method">
                                     <div class="pay-top sin-payment">
-                                        <input id="payment_method_1" class="input-radio" type="radio" value="cheque"
+                                        <input id="payment_method_1" class="input-radio" type="radio" value="1"
                                             checked="checked" name="payment_method" />
                                         <label for="payment_method_1">
                                             Thanh toán khi nhận hàng (COD)
@@ -108,7 +116,7 @@
 
 
                                     <div class="pay-top sin-payment sin-payment-3">
-                                        <input id="payment-method-4" class="input-radio" type="radio" value="cheque"
+                                        <input id="payment-method-4" class="input-radio" type="radio" value="2"
                                             name="payment_method" />
                                         <label for="payment-method-4">PayPal
                                         </label>
@@ -122,8 +130,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="Place-order btn-hover">
-                               
+                            <div class="Place-order btn-hover">                               
                                 <button class="finish" type="submit" > Đặt hàng</button>
                           </form> 
                             </div>

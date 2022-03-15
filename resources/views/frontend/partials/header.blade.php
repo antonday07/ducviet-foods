@@ -135,11 +135,8 @@
                         @endif
 
 
-                        <div class="header-action-style header-action-cart" >
-                            <a  href="{{ route('cart') }}"><i class="pe-7s-shopbag giohang"></i>
-                                {{-- <span class="product-count bg-black">{{ Cart::count() }}</span> --}}
-                                <span class="product-count bg-black">{{ Cart::content()->count() }}</span>
-                            </a>
+                        <div class="header-action-style header-action-cart" id="header_cart" >
+                           @include('frontend.partials.header_cart')
                         </div>
                         <div class="header-action-style d-block d-lg-none">
                             <a class="mobile-menu-active-button" href="#"><i class="pe-7s-menu"></i></a>

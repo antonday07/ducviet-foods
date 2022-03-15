@@ -24,10 +24,10 @@ class CheckingInfoRequest extends FormRequest
     public function rules()
     {
         return [
-            'Name' =>'min:4' ,'max:225' ,'string',
-            'Phone'=>'min:8','phone',
-            'Address'=>'min:5','max:255',
-            'Email'=>'min:5','email'
+            'name' =>'min:4' ,'max:225' ,'string',
+            'phone'=>'min:8','phone',
+            'address'=>'min:5','max:255',
+            'email'=>'min:5','email'
         ];
     }
 }

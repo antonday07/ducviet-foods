@@ -67,6 +67,7 @@ Route::group(['middleware' => ['auth:admin']], function () {
         });
         Route::group(['prefix' => 'order'], function () {
             Route::get('index', 'Backend\OrderController@index')->name('order.index');
+            Route::get('datatable', 'Backend\OrderController@getDatatable')->name('order.datatable');
             Route::get('detail/{id}', 'Backend\OrderController@detail')->name('order.detail');
             Route::post('changeStatus', 'Backend\OrderController@changeStatus')->name('order.change');
             Route::post('cancelOrder', 'Backend\OrderController@cancelOrder')->name('order.cancel');
@@ -124,14 +125,26 @@ Route::group(['middleware' => ['auth:admin']], function () {
             Route::post('edit/{id}', 'Backend\SupplierController@update')->name('supplier.update');
             Route::delete('delete/{id}', 'Backend\SupplierController@delete')->name('supplier.delete');
         });
+
+        Route::group(['prefix' => 'bill-import'], function () {
+            Route::get('index', 'Backend\BillImportController@index')->name('bill.import.index');
+            Route::get('datatable', 'Backend\BillImportController@getDatatable')->name('bill.import.datatable');
+            Route::get('create', 'Backend\BillImportController@create')->name('bill.import.create');
+            Route::post('create', 'Backend\BillImportController@store')->name('bill.import.store');
+
+            Route::get('edit/{id}', 'Backend\BillImportController@edit')->name('bill.import.edit');
+            Route::post('edit/{id}', 'Backend\BillImportController@update')->name('bill.import.update');
+            Route::delete('delete/{id}', 'Backend\BillImportController@delete')->name('bill.import.delete');
+        });
     });
 });
+Route::get('cart', 'Frontend\CartController@index')->name('cart');
+Route::post('delete', 'Frontend\CartController@removeCart')->name('removefromcart');
+Route::post('changeqty', 'Frontend\CartController@updateCart')->name('changeqty');
+
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('cart', 'Frontend\CartController@index')->name('cart');
-    Route::post('delete', 'Frontend\CartController@removeCart')->name('removefromcart');
-    Route::post('changeqty', 'Frontend\CartController@updateCart')->name('changeqty');
-    Route::get('/checkout', 'Frontend\CheckOut@CheckOut')->name('checkout');
-    Route::get('/finishshopping', 'Frontend\CheckOut@FinishShopping')->name('finishshopping');
+    Route::get('/checkout', 'Frontend\CheckOutController@CheckOut')->name('checkout');
+    Route::get('/finishshopping', 'Frontend\CheckOutController@FinishShopping')->name('finishshopping');
 });
 Route::post('add', 'Frontend\CartController@addCart')->name('addtocart');
 

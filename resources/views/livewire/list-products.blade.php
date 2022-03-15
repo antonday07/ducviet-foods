@@ -5,7 +5,13 @@
                     <img src="{{ $product->image  }}" alt="">
                 </a>
                 <div class="product-badge badge-top badge-right badge-pink">
-                    <span>-{{  !empty($product->promotion) ? $product->promotion->price : '' }}%</span>
+                    @if (!empty($product->promotion))
+                        @if ($product->promotion->type == 1)
+                            <span>- {{ number_format($product->promotion->price,0,'', '.') }} vnđ</span>
+                        @else
+                            <span>-{{ $product->promotion->price }} %</span>
+                        @endif
+                    @endif
                 </div>
                 
                 <div class="product-action-2-wrap">
@@ -16,17 +22,13 @@
             </div>
             <div class="product-content">
                 <h3><a href="{{route('detail', $product->id)}}">{{ $product->name }}</a></h3>
-                <div class="product-price">
-                    @if ($product->promotion)
-                        @if ($product->promotion->price == 0)
-                            <span class="old-price-current"> {{ number_format($product->retail_price, 0, '', '.') }} đ </span>
-                        @else
-                            <span class="old-price"> {{ number_format($product->retail_price, 0, '', '.') }} đ </span>
-                            <span class="new-price"> {{ number_format($product->retail_price - ($product->retail_price * $product->promotion->price) /100, 0, '', '.') }} đ </span>
-                        @endif
-                    @else 
-                        <p>No price coupon</p>    
-                    @endif
+                <div class="product-price"> 
+                    @if (empty($product->promotion))
+                        <span class="old-price-current"> {{ number_format($product->retail_price, 0, '', '.') }} vnđ </span>
+                    @else
+                        <span class="old-price"> {{ number_format($product->retail_price, 0, '', '.') }} vnđ </span>
+                        <span class="new-price"> {{ number_format($product->price_discount, 0, '', '.') }} vnđ </span>
+                    @endif                
                 </div>
             </div>
         </div>

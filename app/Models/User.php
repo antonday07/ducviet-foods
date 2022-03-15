@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'image', 'email', 'password',
+        'name', 'image', 'email', 'password', 'phone', 'address', 'dob'
     ];
 
     /**
@@ -38,5 +38,10 @@ class User extends Authenticatable
     ];
     public function Bills() {
         return $this->hasMany(Bills::class);
+    }
+
+    public function updateInfoUser(array $data, int $id)
+    {
+        return $this->where($this->primaryKey, $id)->update($data);
     }
 }

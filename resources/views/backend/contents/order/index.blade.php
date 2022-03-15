@@ -21,7 +21,7 @@
                                                         <i class="fas fa-search"></i>
                                                     </div>
                                                     <form action="" method="GET">
-                                                        <input type="text" class="form-control" id="search-order"
+                                                        <input type="text" class="form-control" id="filter_search"
                                                             placeholder="Tìm đơn theo sđt" name="keyword">
                                                     </form>
                                                 </div>
@@ -33,14 +33,15 @@
                                                     <div class="dropdown-menu dropdown-menu-right">
                                                         <ul class="link-list-opt no-bdr">
                                                             <li><a
-                                                                    href="{{ request()->fullUrlWithQuery(['status' => 'dang-xu-ly']) }}"><span>Đang
+                                                                    href="#" class="filter-status active" data-status="1" ><span>Đang
                                                                         xử lý</span></a></li>
                                                             <li><a
-                                                                    href="{{ request()->fullUrlWithQuery(['status' => 'thanh-cong']) }}"><span>Thành
+                                                                    href="#" class="filter-status" data-status="2" ><span>Đang vận chuyển
                                                                         công</span></a></li>
                                                             <li><a
-                                                                    href="{{ request()->fullUrlWithQuery(['status' => 'that-bai']) }}"><span>Thất
-                                                                        bại</span></a></li>
+                                                                    href="#" class="filter-status" data-status="3" ><span>Đã vận chuyển</span></a></li>
+                                                            <li><a
+                                                                    href="#" class="filter-status" data-status="4" ><span>Thất bại</span></a></li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -53,79 +54,88 @@
                         </div><!-- .nk-block-between -->
                     </div><!-- .nk-block-head -->
                     <div class="nk-block">
-                        <div class="nk-tb-list is-separate is-medium mb-3">
-                            <div class="nk-tb-item nk-tb-head">
-
-
-                                <div class="nk-tb-col tb-col-sm"><span>Khách hàng</span></div>
-                                <div class="nk-tb-col tb-col-md"><span>Số điện thoại</span></div>
-                                <div class="nk-tb-col"><span class="d-none d-mb-block">Địa chỉ</span></div>
-
-                                <div class="nk-tb-col tb-col-md"><span>Trạng thái</span></div>
-                                <div class="nk-tb-col tb-col-md"><span>Ngày tạo</span></div>
-                                <div class="nk-tb-col"><span>Tổng tiền</span></div>
-                                <div class="nk-tb-col nk-tb-col-tools">
-
-                                </div>
-                            </div><!-- .nk-tb-item -->
-                            @foreach ($bills as $data)
-                                <div class="nk-tb-item">
-
-                                    <div class="nk-tb-col tb-col-md">
-                                        <a style="color: gray;" href="{{ route('order.detail', $data->id) }}"><span
-                                                class="tb-sub">{{ $data->Name }}</span></a>
-                                    </div>
-
-                                    <div class="nk-tb-col tb-col-sm">
-                                        <span class="tb-sub">{{ $data->Phone }}</span>
-                                    </div>
-                                    <div class="nk-tb-col tb-col-md">
-                                        <span class="tb-sub text-primary">{{ $data->Address }}</span>
-                                    </div>
-                                    <div class="nk-tb-col">
-                                        <span class="dot bg-warning d-mb-none"></span>
-                                        @if ($data->Status == '0')
-                                            <span
-                                                class="badge badge-sm badge-dot has-bg badge-warning d-none d-mb-inline-flex">Đang
-                                                xử lý</span>
-
-                                        @elseif ($data->Status == '1')
-                                            <span
-                                                class="badge badge-sm badge-dot has-bg badge-success d-none d-mb-inline-flex">Đã
-                                                hoàn thành</span>
-                                        @else
-                                            <span
-                                                class="badge badge-sm badge-dot has-bg badge-danger d-none d-mb-inline-flex">Đã
-                                                hủy</span>
-                                        @endif
-
-                                    </div>
-                                    <div class="nk-tb-col tb-col-md">
-                                        <span class="tb-sub text-primary">{{ \Carbon\Carbon::parse($data->created_at)->format('d/m/Y') }} ({{$data->created_at->diffForHumans($now)}})</span>
-                                    </div>
-                                    <div class="nk-tb-col">
-                                        <span class="tb-lead"> {{ $data->total }} đ</span>
-                                    </div>
-                                    <div class="nk-tb-col nk-tb-col-tools">
-
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="list-products">
+                                    <div class="table-custom">
+                                        <table id="list_orders" class="table display" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th scope="col">Khách hàng</th>
+                                                    <th scope="col">Địa chỉ</th>
+                                                    <th scope="col">Trạng thái</th>
+                                                    <th scope="col">Thanh toán</th>
+                                                    <th scope="col">Ngày tạo</th>
+                                                    <th scope="col">Tổng tiền</th>
+                                                    <th scope="col">Hành động</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
                                     </div>
                                 </div>
-                            @endforeach
-                            <!-- .nk-tb-item -->
-                        </div><!-- .nk-tb-list -->
-                        <div class="card">
-                            <div class="card-inner">
-                                <div class="nk-block-between-md g-3">
-                                    <div class="g">
-                                        {{ $bills->links() }}
-
-                                    </div><!-- .pagination-goto -->
-                                </div><!-- .nk-block-between -->
                             </div>
                         </div>
                     </div><!-- .nk-block -->
+
                 </div>
             </div>
         </div>
     </div>
 @endsection
+@push('after-scripts')
+    <script>
+        // JS script only for render datatable
+        var listOrders = $('#list_orders').DataTable({
+            responsive: true,
+            processing: true,
+            serverSide: true,
+            "bLengthChange" : false,
+            searching: false,
+            "ordering": false,
+            pageLength: 5,
+            ajax: {
+                type: "GET",
+                url: '{{ route('order.datatable') }}',
+                data: function(d){
+                    d._token = '{{ csrf_token() }}',
+                    d.search = $("#filter_search").val(),
+                    d.status = $('.link-list-opt .filter-status.active').attr("data-status")
+                    // d.search = $("#filter_search").val(),
+                    // d.start_time = $('#appointment_start_time').val(),
+                    // d.end_time = $('#appointment_end_time').val()
+                    // d.type_section = arrTypeSection,
+                    // d.gender = $("#gender_filter option:selected" ).val(),
+                    // d.charge_start = $('#charge_start').val(),
+                    // d.charge_end = $('#charge_end').val()
+                },
+            },
+            columns: [
+                {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                {data: 'customer', name: 'customer'},
+                {data: 'address', name: 'address'},
+                {data: 'status', name: 'status'},
+                {data: 'status_payment', name: 'status_payment'},
+                {data: 'date_import', name: 'date_import'},
+                {data: 'total', name: 'total'},
+                {data: 'action', name:'action'}
+            ]
+        });
+
+        $('#filter_search').on('keyup', function() {
+            listOrders.draw();
+        })
+
+        $('.link-list-opt .filter-status').on('click', function(e) {
+            e.preventDefault();         
+            $(".link-list-opt .filter-status").removeClass("active");
+            $(this).addClass("active");            
+            listOrders.draw(); 
+        })
+
+        // delete item product
+        $('body').on('click', '.btn-delete-item', deleteConfirmation);
+
+
+    </script>
+@endpush

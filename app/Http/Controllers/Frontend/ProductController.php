@@ -24,7 +24,7 @@ class ProductController extends Controller
         $product = Product::find($id);
         $images = $product->images;
         $categories = ProductCategory::select('id', 'name')->get();
-        $relatedProduct = Product::where('product_category_id', $product->product_category_id)->get();
+        $relatedProduct = Product::where('category_id', $product->category_id)->get();
         // dd($relatedProduct);
         // return $images;
         return view('frontend.contents.product_detail', compact('product', 'images', 'categories', 'relatedProduct', 'id'));

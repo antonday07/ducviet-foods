@@ -13,8 +13,8 @@
                                 <div class="swiper-slide">
                                     <div class="easyzoom-style">
                                         <div class="easyzoom easyzoom--overlay">
-                                            <a href="{{ asset($product->thumbnail) }}">
-                                                <img src="{{ asset($product->thumbnail) }}" alt="" />
+                                            <a href="{{ $product->image }}">
+                                                <img src="{{ $product->image }}" alt="" />
                                             </a>
                                         </div>
 
@@ -47,14 +47,13 @@
                     <div class="product-details-content" data-aos="fade-up" data-aos-delay="400">
                         <h2>{{ $product->name }}</h2>
                         <div class="product-details-price">
-                            @if ($product->promotion->percent == 0)
-                                <span class="old-price-current"> {{ number_format($product->price, 0, '', '.') }} đ
+                            @if (empty($product->promotion))
+                                <span class="old-price-current"> {{ number_format($product->retail_price, 0, '', '.') }} vnđ
                                 </span>
                             @else
-                                <span class="old-price"> {{ number_format($product->price, 0, '', '.') }} đ </span>
+                                <span class="old-price"> {{ number_format($product->retail_price, 0, '', '.') }} vnđ </span>
                                 <span class="new-price">
-                                    {{ number_format($product->price - ($product->price * $product->promotion->percent) / 100, 0, '', '.') }}
-                                    đ
+                                    {{ number_format($product->price_discount, 0, '', '.') }} vnđ                            
                                 </span>
                             @endif
                         </div>
@@ -100,18 +99,18 @@
                 <div id="des-details2" class="tab-pane active">
                     <div class="product-description-content text-center">
                         <p data-aos="fade-up" data-aos-delay="200">
-                            {!! $product->detail !!}
+                            {!! $product->description !!}
                         </p>
 
                     </div>
                 </div>
-                <div id="des-details3" class="tab-pane">
+                {{-- <div id="des-details3" class="tab-pane">
                     <div class="product-description-content text-center">
                         <p data-aos="fade-up" data-aos-delay="200">
                             {{ $product->usage }}
                         </p>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -127,10 +126,16 @@
                         <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200">
                             <div class="product-img img-zoom mb-25">
                                 <a href="{{route('detail', $relatedItem->id)}}">
-                                    <img src="{{ asset($relatedItem->thumbnail)  }}" alt="">
+                                    <img src="{{ $relatedItem->image  }}" alt="">
                                 </a>
                                 <div class="product-badge badge-top badge-right badge-pink">
-                                    <span>-{{ $relatedItem->promotion->percent }}%</span>
+                                    @if (!empty($relatedItem->promotion))
+                                        @if ($relatedItem->promotion->type == 1)
+                                            <span>- {{ number_format($relatedItem->promotion->price,0,'', '.') }} vnđ</span>
+                                        @else
+                                            <span>-{{ $relatedItem->promotion->price }} %</span>
+                                        @endif
+                                    @endif
                                 </div>
                                 
                                 <div class="product-action-2-wrap">
@@ -141,13 +146,13 @@
                             </div>
                             <div class="product-content">
                                 <h3><a href="product-details.html">{{ $relatedItem->name }}</a></h3>
-                                <div class="product-price">
-                                    @if ($relatedItem->promotion->percent == 0)
-                                        <span class="old-price-current"> {{ number_format($relatedItem->price, 0, '', '.') }} đ </span>
+                                <div class="product-price"> 
+                                    @if (empty($relatedItem->promotion))
+                                        <span class="old-price-current"> {{ number_format($relatedItem->retail_price, 0, '', '.') }} vnđ </span>
                                     @else
-                                        <span class="old-price"> {{ number_format($relatedItem->price, 0, '', '.') }} đ </span>
-                                        <span class="new-price"> {{ number_format($relatedItem->price - ($relatedItem->price*$product->promotion->percent)/100, 0, '', '.') }} đ </span>
-                                    @endif
+                                        <span class="old-price"> {{ number_format($relatedItem->retail_price, 0, '', '.') }} vnđ </span>
+                                        <span class="new-price"> {{ number_format($relatedItem->price_discount, 0, '', '.') }} vnđ </span>
+                                    @endif                
                                 </div>
                             </div>
                         </div>

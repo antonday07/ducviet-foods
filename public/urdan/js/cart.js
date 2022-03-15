@@ -1,50 +1,31 @@
 
 $(".qty").change(function() {
-    let rowId = $(this).data("row_id");
     let qty = $(this).val();
     let _token = $('input[name="_token"]').val();
-    let index = $(this).data("index");
-    let url_update = $(this).data("url_update");
-    if (qty == 0) {
-        var r = confirm("Bạn có muốn xóa sản phẩm không ???");
-        if (r == true) {
-            $.ajax({
-                url: url_update,
-                type: "POST",
-                data: {
-                    qty: qty,
-                    rowId: rowId,
-                    _token: _token
-                }
-            }).done(function(data) {
-                let subtotal = data.subtotal + " đ";
-                $("span." + rowId).html(subtotal);
-                $("span.total").html(data.total + " đ");
-                $("span.product-count").html(data.count);
-                document.getElementById("cart-table").deleteRow(index);
-                $("a.checkout").addClass("disabled");
-                swal(data.status, data.message, "success");
-            });
-        } else {
-            return false;
+    let url_update = $(this).data("url");
+    let id = $(this).data("id");
+
+    $.ajax({
+        url: url_update,
+        type: "POST",
+        data: {
+            quantity: qty,
+            id: id,
+            _token: _token
         }
-    } else {
-        $.ajax({
-            url: url_update,
-            type: "POST",
-            data: {
-                qty: qty,
-                rowId: rowId,
-                _token: _token
-            }
-        }).done(function(data) {
-            let subtotal = data.subtotal + " đ";
-            $("span." + rowId).html(subtotal);
-            $("span.total").html(data.total + " đ");
-            $("span.product-count").html(data.count);
-        });
-    }
+    }).done(function(response) {
+        let subtotal = numberWithCommas(response.subTotal) + " đ";
+        let total = numberWithCommas(response.total) + " đ";
+        $("#header_cart").html(response.data);
+        $("span.subtotal-" + id).html(subtotal);
+        $("span.total").html(total);  
+    });
+   
 });
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ".");
+}
 
 $(".add-cart").click(function() {
     let id = $(this).attr("id");
@@ -57,14 +38,14 @@ $(".add-cart").click(function() {
             id: id,
             _token: _token
         }
-    }).done(function(data) {
-        if (data.status == "success") {
-            $("span.product-count").html(data.count);
-            swal(data.status, data.message, "success");
-        } else if (data.status == "error") {
-            swal(data.status, data.message, "error");
+    }).done(function(response) {
+        if (response.status == "success") {
+            $("#header_cart").html(response.data);
+            swal(response.status, response.message, "success");
+        } else if (response.status == "error") {
+            swal(response.status, response.message, "error");
         } else {
-            swal(data.message, {
+            swal(response.message, {
                 buttons: {
                     cancel: "Không mua nữa :)",
                     catch: {
@@ -86,16 +67,14 @@ $(".add-cart").click(function() {
 });
 
 $(".remove-cart").click(function() {
-    let rowId = $(this).attr("id");
+    let id = $(this).attr("id");
     let _token = $('input[name="_token"]').val();
     let url_delete = $(this).data("url_delete");
     var i =this.parentNode.parentNode.rowIndex;
     
-    
- 
             swal({
                 title: "Bạn có chắc chắn muốn xóa không?",
-                text: "Một khi đã khóa bạn sẽ không thể hoàn tác",
+                text: "Xóa sản phẩm khỏi giỏ hàng",
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
@@ -106,36 +85,33 @@ $(".remove-cart").click(function() {
                         url: url_delete,
                         type: "POST",
                         data: {
-                            rowId: rowId,
+                            id: id,
                             _token: _token
                         }
-                    }).done(function(data) {
-                    
-                        if (data.status == "success") {
-                            if(data.total ==0){
+                    }).done(function(response) {                    
+                        if (response.status == "success") {
+                            let total = numberWithCommas(response.total) + " đ";
+                            if(response.total == 0){
                                 $("a.checkout").addClass("disabled");
                             }
-                            $("span.product-count").html(data.count);
-                            $("span.total").html(data.total + " đ");
-                            swal(data.status, data.message, "success");
-                           
-                            document.getElementById("cart-table").deleteRow(i);
+                            $("#header_cart").html(response.data);
+                            $("span.total").html(total);
+                            swal(response.status, response.message, "success");                           
+                            $('#item-' + id).remove();
                             swal("Xóa thành công !!!", {
-                             icon: "success",
-                              }
-                            
-                  );
-                } else {
-                  swal("Your imaginary file is safe!");
-                }
-              });
+                                icon: "success",
+                            });
+                        } else {
+                            swal("Bỏ xóa sản phẩm !");
+                        }
+                    });
         } 
     });
 });
-function checkout(a) {
-    if (a == 0) {
+function checkout(item) {
+    if (item == 0) {
         swal("Bạn chưa có sản phẩm nào trong giỏ hàng?", {
-            buttons: ["Okee!", "Cancel!"]
+            buttons: ["Hiểu!", "Hủy bỏ!"]
         });
     } else {
         window.location = "/checkout";

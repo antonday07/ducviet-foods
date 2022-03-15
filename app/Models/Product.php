@@ -43,4 +43,14 @@ class Product extends Model
         return Ultilities::replaceUrlImage($value);
     }
 
+    public function getPriceDiscountAttribute()
+    {
+        $price = $this->promotion->price;
+        if($this->promotion->type == 1) {
+            return $this->retail_price - $price;
+        } else {
+            return $this->retail_price - $this->retail_price * ($price / 100);
+        }
+    }
+
 }
