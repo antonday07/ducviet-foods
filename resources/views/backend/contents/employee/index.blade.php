@@ -37,7 +37,7 @@
                                         </li>
                                         <li class="nk-block-tools-opt">
                                             
-                                            <a href="{{ route('employee.create')}}" class="btn btn-primary d-none d-md-inline-flex"><i class="fas fa-plus"></i><span>Add</span></a>
+                                            <a href="{{ route('employee.create')}}" class="btn btn-primary d-none d-md-inline-flex"><i class="fas fa-plus"></i><span>Thêm mới nhân viên</span></a>
                                         </li>
                                     </ul>
                                 </div>

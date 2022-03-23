@@ -9,6 +9,10 @@ class Product extends Model
 {
     protected $table = 'products';
 
+    const SELLING = 1 ;
+    const PAUSE_SELLING = 2;
+    const OUT_OF_STOCK = 3;
+
     protected $fillable = ["unit_id", "category_id", "promotion_id", "supplier_id", "name", "slug", "entry_price", "retail_price", "description", "status", "image"];
     public function product_category()
     {
@@ -36,11 +40,30 @@ class Product extends Model
     {
         return $this->hasMany(BillDetail::class);
     }
+
+    public function warehouse()
+    {
+        return $this->hasOne(Warehouse::class, 'product_id', 'id');
+    }
     /** attribute here */
 
     public function getImageAttribute($value)
     {
         return Ultilities::replaceUrlImage($value);
+    }
+
+    public function getIsOutOfStockAttribute()
+    {
+        if($this->status == self::OUT_OF_STOCK ) {
+            return 'sold';
+        }
+
+        if(!empty($this->warehouse)) {
+            if($this->warehouse->quantity < 1) {
+                return 'sold';
+            }
+        }
+        return 'in';
     }
 
     public function getPriceDiscountAttribute()

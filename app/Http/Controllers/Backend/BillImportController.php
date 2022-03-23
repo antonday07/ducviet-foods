@@ -12,6 +12,7 @@ use App\Models\ProductCategory;
 use App\Models\Promotion;
 use App\Models\Supplier;
 use App\Models\Unit;
+use App\Models\Warehouse;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -25,10 +26,63 @@ class BillImportController extends Controller
         return view('backend.contents.bill-import.index');
     }
 
-    public function getDatatable(Request $request)
+    function productIndex()
+    {
+        return view('backend.contents.bill-import.product-index', [
+            'products' => Product::select('id', 'name', 'entry_price')->get(),
+            'suppliers' => Supplier::select('id', 'name')->get()
+        ]);
+    }
+
+    public function productDatatable(Request $request, BillImportDetail $billImportDetail)
     {
         if($request->ajax()){
-            $bills = BillImport::all();
+            
+            $bills = $billImportDetail->getListProductImport($request);
+          
+                return DataTables::of($bills)
+                ->addIndexColumn()
+                ->addColumn('product_id', function($item){
+                    return $item->product->name;
+                })
+                ->addColumn('supplier_id', function($item){
+                    return $item->supplier->name ;
+                })
+                ->addColumn('amount', function($item){
+                    return $item->amount;
+                })
+                ->addColumn('unit', function($item){
+                    return $item->product->unit->name;
+                })
+                ->addColumn('price', function($item){
+                    return  number_format($item->price, 0,'', '.') . ' đ';
+                })
+                ->addColumn('entry_date', function($item){
+                    return $item->entry_date;
+                })
+                ->addColumn('expiry_date', function($item){
+                    return $item->expiry_date;
+                })
+                ->addColumn('total_price', function($item){
+                    return  number_format($item->total_price, 0,'', '.') . ' đ';
+                })
+                ->addColumn('created_at', function($item){
+                    return $item->created_at;
+                })
+                // ->addColumn('action', function($item){
+                //     return view('backend.contents.elements.custom-action', [
+                //         'routeEdit' => route('bill.import.edit', [$item->id]),
+                //         'routeDelete' => route('bill.import.delete', [$item->id]),
+                //     ]);
+                // })
+                ->make(true);
+        }
+    }
+
+    public function getDatatable(Request $request, BillImport $billImport)
+    {
+        if($request->ajax()){
+            $bills = $billImport->getAllBills($request);          
                 return DataTables::of($bills)
                 ->addIndexColumn()
                 ->addColumn('bill_id', function($item){
@@ -47,8 +101,8 @@ class BillImportController extends Controller
                     return $item->date_import;
                 })
                 ->addColumn('action', function($item){
-                    return view('backend.contents.elements.custom-action', [
-                        'routeEdit' => route('bill.import.edit', [$item->id]),
+                    return view('backend.contents.elements.custom-action-detail', [    
+                        'item' => $item,                   
                         'routeDelete' => route('bill.import.delete', [$item->id]),
                     ]);
                 })
@@ -62,7 +116,7 @@ class BillImportController extends Controller
             'suppliers' => Supplier::select('id', 'name')->get()
         ]);
     }
-    public function store(Request $request, BillImport $billImport, BillImportDetail $billImportDetail) {
+    public function store(Request $request, BillImport $billImport, BillImportDetail $billImportDetail, Warehouse $warehouse) {
         $request->validate([
             'product' => 'required|array',
             'product.*.product_id' => 'required|exists:products,id',
@@ -88,7 +142,7 @@ class BillImportController extends Controller
                 'date_import' => now()
             ];            
             $bill = $billImport->insertBillImport($data);            
-            $billImportDetail->insertProductBill($request, $bill->id);           
+            $billImportDetail->insertProductBill($request, $bill->id, $warehouse);           
             DB::commit();
             flasher(__('web.action_success', ['action' => 'Thêm đơn nhâp hàng']), 'success');
             return redirect()->route('bill.import.index');
@@ -126,10 +180,10 @@ class BillImportController extends Controller
         $status = $supplier->delete();
         if( $status ) {
             $success = true;
-            $message = "Xóa nhà cung cấp thành công!";
+            $message = "Xóa đơn nhập hàng thành công!";
         } else {
             $success = false;
-            $message = "Xóa nhà cung cấp thất bại!";
+            $message = "Xóa đơn nhập hàng thất bại!";
         }
         return response()->json([
             'success' => $success,

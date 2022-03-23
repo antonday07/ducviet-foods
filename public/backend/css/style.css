@@ -38,4 +38,15 @@ body {
   top: 55%;
   right: 0; }
 
+.box-bill-detail p span {
+  font-weight: 600;
+  font-size: 15px; }
+
+.modal-dialog {
+  max-width: 900px; }
+
+.table td,
+.table th {
+  padding: 10px 5px 10px 5px; }
+
 /*# sourceMappingURL=style.css.map */

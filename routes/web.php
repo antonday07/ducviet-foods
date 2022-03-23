@@ -48,12 +48,20 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('logout', 'Admin\LoginController@logout')->name('logout.admin');
 });
 Route::group(['middleware' => ['auth:admin']], function () {
-    Route::get('/admin', 'Backend\DashboardController@index');
-    Route::get('/dashboard', 'Backend\DashboardController@index')->name('admin.index');
+    Route::get('/admin', 'Backend\DashboardController@index')->name('admin.index');
+   // Route::get('/dashboard', 'Backend\DashboardController@index')->name('admin.index');
     Route::group(['prefix' => 'admin'], function () {
         Route::group(['prefix' => 'customer'], function () {
+
             Route::get('index', 'Backend\CustomerController@index')->name('customer.index');
-            Route::get('delete/{id}', 'Backend\CustomerController@delete')->name('customer.delete');
+            Route::get('datatable', 'Backend\CustomerController@getDatatable')->name('customer.datatable');
+            Route::get('create', 'Backend\CustomerController@create')->name('customer.create');
+            Route::post('create', 'Backend\CustomerController@store')->name('customer.store');
+
+            Route::get('edit/{id}', 'Backend\CustomerController@edit')->name('customer.edit');
+            Route::post('edit/{id}', 'Backend\CustomerController@update')->name('customer.update');
+            Route::delete('delete/{id}', 'Backend\CustomerController@delete')->name('customer.delete');
+
         });
         Route::group(['prefix' => 'promotion'], function () {
             Route::get('index', 'Backend\PromotionController@index')->name('promotion.index');
@@ -69,9 +77,17 @@ Route::group(['middleware' => ['auth:admin']], function () {
             Route::get('index', 'Backend\OrderController@index')->name('order.index');
             Route::get('datatable', 'Backend\OrderController@getDatatable')->name('order.datatable');
             Route::get('detail/{id}', 'Backend\OrderController@detail')->name('order.detail');
+            Route::get('edit/{id}', 'Backend\OrderController@edit')->name('order.edit');
             Route::post('changeStatus', 'Backend\OrderController@changeStatus')->name('order.change');
             Route::post('cancelOrder', 'Backend\OrderController@cancelOrder')->name('order.cancel');
         });
+
+        Route::group(['prefix' => 'warehouse'], function () {
+            Route::get('index', 'Backend\WarehouseController@index')->name('warehouse.index');
+            Route::get('datatable', 'Backend\WarehouseController@getDatatable')->name('warehouse.datatable');
+          
+        });
+
         Route::group(['prefix' => 'employee'], function () {
             Route::get('index', 'Backend\EmployeeController@index')->name('employee.index');
             Route::get('datatable', 'Backend\EmployeeController@getDatatable')->name('employee.datatable');
@@ -129,6 +145,8 @@ Route::group(['middleware' => ['auth:admin']], function () {
         Route::group(['prefix' => 'bill-import'], function () {
             Route::get('index', 'Backend\BillImportController@index')->name('bill.import.index');
             Route::get('datatable', 'Backend\BillImportController@getDatatable')->name('bill.import.datatable');
+            Route::get('/product/index', 'Backend\BillImportController@productIndex')->name('bill.import.product.index');
+            Route::get('product/datatable', 'Backend\BillImportController@productDatatable')->name('bill.import.product.datatable');
             Route::get('create', 'Backend\BillImportController@create')->name('bill.import.create');
             Route::post('create', 'Backend\BillImportController@store')->name('bill.import.store');
 

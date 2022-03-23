@@ -15,7 +15,7 @@ class Bill extends Model
 
     protected $table = 'bills';
 
-    protected $fillable = ["user_id", "note", "date", "total_price", "delivery_address", "status", "status_payment"];
+    protected $fillable = ["user_id", "note", "code_bill", "date", "total_price", "delivery_address", "status", "status_payment", "bill_phone", "bill_email", "bill_name"];
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -34,12 +34,10 @@ class Bill extends Model
     {
         $data = $this->with('user');
         if(!empty($request->search)) {
-            $data->whereHas('user', function($query) use ($request) {
-                $query->where('name', 'LIKE', '%' . $request->search . '%');
-            });        
+            $data->where('bill_name', 'LIKE', '%' . $request->search . '%');
         }      
-        if(!empty($request->status)) {
-            $data->where('status', $request->status);
+        if(!empty($request->status_change) && $request->status_change != 5) {
+            $data->where('status', $request->status_change);
         }
         return $data->get();
     }

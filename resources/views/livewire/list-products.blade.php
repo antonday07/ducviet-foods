@@ -4,6 +4,9 @@
                 <a href="{{route('detail', $product->id)}}">
                     <img src="{{ $product->image  }}" alt="">
                 </a>
+                @if ($product->is_out_of_stock == 'sold') 
+                    <span class="out-stock badge-top badge-left badge-pink">Hết hàng</span>
+                @endif
                 <div class="product-badge badge-top badge-right badge-pink">
                     @if (!empty($product->promotion))
                         @if ($product->promotion->type == 1)
@@ -16,7 +19,9 @@
                 
                 <div class="product-action-2-wrap">
                     @csrf
-                    <a href="#" onclick="return false;" data-url_addcart="{{ route('addtocart') }}" id="{{ $product->id }}" class="product-action-btn-2 add-cart" title="Add To Cart" ><i class="pe-7s-cart"></i> Add to cart</a>
+                    @if ($product->is_out_of_stock == 'in') 
+                        <a href="#" onclick="return false;" data-url_addcart="{{ route('addtocart') }}" id="{{ $product->id }}" class="product-action-btn-2 add-cart" title="Add To Cart" ><i class="pe-7s-cart"></i> Add to cart</a>
+                    @endif
 
                 </div>
             </div>

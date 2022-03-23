@@ -111,7 +111,7 @@
                                 <div class="dropdown " style="margin-right: 13px; margin-left: 13px;">
                                     <a class="" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown">
                                         <span>
-                                            <img class="thumb-nail rounded-circle " src="{{ Auth::user()->image }}" alt=""
+                                            <img class="thumb-nail rounded-circle " src="{{ Auth::user()->avatar ?? asset('images/avatar/user.jpg') }}" alt=""
                                                 width="35px" height="35px">
                                         </span>
 

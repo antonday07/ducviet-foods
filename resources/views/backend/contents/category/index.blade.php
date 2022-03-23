@@ -18,7 +18,7 @@
                                         
                                         <li class="nk-block-tools-opt">
                                             
-                                            <a href="{{ route('category.create')}}" class="btn btn-primary d-none d-md-inline-flex"><i class="fas fa-plus"></i><span>Add Category</span></a>
+                                            <a href="{{ route('category.create')}}" class="btn btn-primary d-none d-md-inline-flex"><i class="fas fa-plus"></i><span>Thêm danh mục</span></a>
                                         </li>
                                         
                                     </ul>

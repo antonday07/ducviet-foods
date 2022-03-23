@@ -21,7 +21,7 @@
 
                                             <a href="{{ route('supplier.create') }}"
                                                 class="btn btn-primary d-none d-md-inline-flex"><i
-                                                    class="fas fa-plus"></i><span>Add Supplier</span></a>
+                                                    class="fas fa-plus"></i><span>Thêm nhà cung cấp</span></a>
                                         </li>
                                     </ul>
                                 </div>

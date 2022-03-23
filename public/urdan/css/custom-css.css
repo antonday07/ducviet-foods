@@ -2,3 +2,21 @@
     width: 100%;
     max-height: 670px !important;
 }
+
+.product-wrap .out-stock {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 130px;
+    height: 35px;
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 5%;
+    display: inline-block;
+    background-color: #fff;
+
+    font-weight: 700;
+    font-size: 19px;
+    color: #fd1748;
+}

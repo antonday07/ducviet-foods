@@ -40,8 +40,7 @@
                                     </div>
                                 </div>   
                                 <div class="col-12">
-                                    <button class="btn btn-primary"><i class="fas fa-plus"></i><span>Edit
-                                            Category</span></button>
+                                    <button class="btn btn-primary"><i class="fas fa-plus"></i><span>Sửa danh mục</span></button>
                                 </div>
                             </div>
                         </form>

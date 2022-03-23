@@ -46,8 +46,7 @@
                                     </div>
                                 </div>   
                                 <div class="col-12">
-                                    <button class="btn btn-primary"><i class="fas fa-plus"></i><span>Add
-                                            Category</span></button>
+                                    <button class="btn btn-primary"><i class="fas fa-plus"></i><span>Thêm danh mục</span></button>
                                 </div>
                             </div>
                         </form>

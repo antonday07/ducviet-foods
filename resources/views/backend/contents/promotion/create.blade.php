@@ -113,8 +113,7 @@
 
                             <div class="row mb-3">
                                 <div class="col-12">
-                                    <button class="btn btn-primary"><i class="fas fa-plus"></i><span>Add
-                                            New</span></button>
+                                    <button class="btn btn-primary"><i class="fas fa-plus"></i><span>Thêm mới nhà cung cấp</span></button>
                                 </div>
                             </div>
                         </form>

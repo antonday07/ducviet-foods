@@ -8,14 +8,26 @@
                     <div class="nk-block-head nk-block-head-sm">
                         <div class="nk-block-between">
                             <div class="nk-block-head-content">
-                                <h3 class="nk-block-title page-title">Quản lý đơn hàng</h3>
+                                <h3 class="nk-block-title page-title">Quản lý kho</h3>
                             </div><!-- .nk-block-head-content -->
                             <div class="nk-block-head-content">
                                 <div class="toggle-wrap nk-block-tools-toggle">
 
                                     <div class="toggle-expand-content" data-content="pageMenu">
                                         <ul class="nk-block-tools g-3">
-                                            <li>
+                                            <li class="w-75">
+                                            
+                                                <select class="form-control" id="product_list" name="category_id">
+                                                    <option value="" selected>Chọn sản phẩm</option>
+                                                    @foreach ($products as $item)
+                                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                    @endforeach
+            
+                                                </select>                                           
+                                          
+                                            </li>
+
+                                            {{-- <li>
                                                 <div class="form-control-wrap">
                                                 <div class="form-icon form-icon-right">
                                                         <i class="fas fa-search"></i>
@@ -25,8 +37,10 @@
                                                             placeholder="Tìm kiếm theo tên " name="keyword">
                                                     </form>
                                                 </div>
-                                            </li>
-                                            <li>
+                                            </li> --}}
+
+
+                                            {{-- <li>
                                                 <div class="drodown">
                                                     <a href="#" class="dropdown-toggle btn btn-outline-light btn-white"
                                                         data-toggle="dropdown">Trạng thái</a>
@@ -47,7 +61,7 @@
                                                         </ul>
                                                     </div>
                                                 </div>
-                                            </li>
+                                            </li> --}}
 
                                         </ul>
                                     </div>
@@ -64,14 +78,9 @@
                                             <thead>
                                                 <tr>
                                                     <th>No</th>
-                                                    <th scope="col">Code</th>
-                                                    <th scope="col">Khách hàng</th>
-                                                    <th scope="col">Địa chỉ</th>
-                                                    <th scope="col">Trạng thái</th>
-                                                    <th scope="col">Thanh toán</th>
-                                                    <th scope="col">Ngày tạo</th>
-                                                    <th scope="col">Tổng tiền</th>
-                                                    <th scope="col">Hành động</th>
+                                                    <th scope="col">Tên sản phẩm</th>
+                                                    <th scope="col">Số lượng nhập</th>
+                                                    <th scope="col">Số lượng</th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -99,47 +108,27 @@
             pageLength: 5,
             ajax: {
                 type: "GET",
-                url: '{{ route('order.datatable') }}',
+                url: '{{ route('warehouse.datatable') }}',
                 data: function(d){
                     d._token = '{{ csrf_token() }}',
-                    d.search = $("#filter_search").val(),
-                    d.status_change = $('.link-list-opt .filter-status.active').attr("data-status")
-                    // d.search = $("#filter_search").val(),
-                    // d.start_time = $('#appointment_start_time').val(),
-                    // d.end_time = $('#appointment_end_time').val()
-                    // d.type_section = arrTypeSection,
-                    // d.gender = $("#gender_filter option:selected" ).val(),
-                    // d.charge_start = $('#charge_start').val(),
-                    // d.charge_end = $('#charge_end').val()
+                    d.product  = $("#product_list").val()
+                    // d.search = $("#filter_search").val()                    // d.search = $("#filter_search").val(),
                 },
             },
             columns: [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                {data: 'code', name: 'code'},
-                {data: 'customer', name: 'customer'},
-                {data: 'address', name: 'address'},
-                {data: 'status', name: 'status'},
-                {data: 'status_payment', name: 'status_payment'},
-                {data: 'date_import', name: 'date_import'},
-                {data: 'total', name: 'total'},
-                {data: 'action', name:'action'}
+                {data: 'product', name: 'product'},
+                {data: 'sum_import', name: 'sum_import'},
+                {data: 'quantity', name: 'quantity'},
             ]
         });
 
-        $('#filter_search').on('keyup', function() {
+        $('#product_list').on('change', function() {
             listOrders.draw();
         })
 
-        $('.link-list-opt .filter-status').on('click', function(e) {
-            e.preventDefault();         
-            $(".link-list-opt .filter-status").removeClass("active");
-            $(this).addClass("active");            
-            listOrders.draw(); 
-        })
-
-        // delete item product
-        $('body').on('click', '.btn-delete-item', deleteConfirmation);
-
-
+        // $('#filter_search').on('keyup', function() {
+        //     listOrders.draw();
+        // })
     </script>
 @endpush

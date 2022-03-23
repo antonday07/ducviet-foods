@@ -22,7 +22,8 @@ return [
     'status_order_label' => [
         1 => 'Đang xử lý',
         2 => 'Đang vận chuyển',
-        3 => 'Đã vận chuyển'
+        3 => 'Đã vận chuyển',
+        4 => 'Đã nhận hàng'
     ],
     'status_order_payment_label' => [
         1 => 'Đã thanh toán',

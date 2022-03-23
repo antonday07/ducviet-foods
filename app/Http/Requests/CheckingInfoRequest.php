@@ -27,7 +27,7 @@ class CheckingInfoRequest extends FormRequest
             'name' =>'min:4' ,'max:225' ,'string',
             'phone'=>'min:8','phone',
             'address'=>'min:5','max:255',
-            'email'=>'min:5','email'
+            'email' => 'required|email|regex:/^([a-zA-Z0-9\+_\-]+)(\.[a-zA-Z0-9\+_\-]+)*@([a-zA-Z0-9\-]+\.)+[a-zA-Z]{2,6}$/',
         ];
     }
 }

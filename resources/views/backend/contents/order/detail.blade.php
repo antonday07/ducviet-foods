@@ -10,7 +10,7 @@
                         <div class="nk-block-between g-3">
                             <div class="nk-block-head-content">
                                 <h3 class="nk-block-title page-title">Chi tiết đơn hàng / <strong
-                                        class="text-primary small">Mã đơn hàng: {{ $bill->id }}</strong></h3>
+                                        class="text-primary small">Mã đơn hàng: #{{ $bill->code_bill }}</strong></h3>
                             </div>
                             <div class="nk-block-head-content">
 
@@ -54,20 +54,35 @@
                                             <div class="nk-block-head">
                                                 <div class="row">
                                                     <div class="col-10">
-                                                        <h5 class="title">Thông tin đơn hàng <span
-                                                                style="color: red;">{{ $bill->Status == '2' ? '(Đơn hàng đã hủy)' : '' }}</span>
+                                                        @php
+                                                             $badgeName = [
+                                                                1 => 'badge-info',
+                                                                2 => 'badge-secondary',
+                                                                3 => 'badge-primary',
+                                                                4 => 'badge-success'
+                                                            ];
+
+                                                            $badgeNamePayment = [
+                                                                1 => 'badge-success',
+                                                                2 => 'badge-primary',
+                                                                3 => 'badge-secondary'
+                                                            ];
+                                                        @endphp 
+                                                        <h5 class="title">Thông tin đơn hàng 
+                                                            <span class="badge {{ $badgeName[$bill->status] }}">{{ config('constants.status_order_label')[$bill->status] }}</span>
+                                                            <span class="badge {{ $badgeNamePayment[$bill->status_payment] }}">{{ config('constants.status_order_payment_label')[$bill->status_payment] }}</span>
                                                         </h5>
-                                                        <p>Thông tin cơ bản, như tên và địa chỉ giao hàng</p>
+                                                        {{-- <p>Thông tin cơ bản, như tên và địa chỉ giao hàng</p> --}}
                                                     </div>
                                                     <div class="col-2">
-                                                        <form action="" method="POST">
+                                                        {{-- <form action="" method="POST">
                                                             @csrf
                                                             <button type="button" data-id="{{ $bill->id }}"
                                                                 value="2"
-                                                                {{ $bill->Status == '2' ? 'disabled' : '' }}
+                                                                {{ $bill->status == '2' ? 'disabled' : '' }}
                                                                 id="cancelOrder" class="btn btn-danger">Hủy đơn
                                                                 hàng</button>
-                                                        </form>
+                                                        </form> --}}
 
                                                     </div>
                                                 </div>
@@ -77,19 +92,19 @@
                                                 <div class="profile-ud-item">
                                                     <div class="profile-ud wider">
                                                         <span class="profile-ud-label">Địa chỉ email</span>
-                                                        <span class="profile-ud-value">{{ $bill->Email }}</span>
+                                                        <span class="profile-ud-value">{{ $bill->bill_email }}</span>
                                                     </div>
                                                 </div>
                                                 <div class="profile-ud-item">
                                                     <div class="profile-ud wider">
                                                         <span class="profile-ud-label">Số điện thoại</span>
-                                                        <span class="profile-ud-value">{{ $bill->Phone }}</span>
+                                                        <span class="profile-ud-value">{{ $bill->bill_phone }}</span>
                                                     </div>
                                                 </div>
                                                 <div class="profile-ud-item">
                                                     <div class="profile-ud wider">
                                                         <span class="profile-ud-label">Địa chỉ nhận hàng</span>
-                                                        <span class="profile-ud-value">{{ $bill->Address }}</span>
+                                                        <span class="profile-ud-value">{{ $bill->delivery_address }}</span>
                                                     </div>
                                                 </div>
 
@@ -97,35 +112,51 @@
                                                     <div class="profile-ud wider">
                                                         <span class="profile-ud-label">Ngày đặt hàng</span>
                                                         <span
-                                                            class="profile-ud-value">{{ \Carbon\Carbon::parse($bill->created_at)->format('d/m/Y') }}</span>
+                                                            class="profile-ud-value">{{ date('d/m/Y', strtotime($bill->date)) }}</span>
                                                     </div>
                                                 </div>
                                                 <div class="profile-ud-item">
                                                     <div class="profile-ud wider">
-                                                        <span class="profile-ud-label">Họ và tên</span>
-                                                        <span class="profile-ud-value">{{ $bill->Name }}</span>
+                                                        <span class="profile-ud-label">Tên khách hàng</span>
+                                                        <span class="profile-ud-value">{{ $bill->bill_name }}</span>
                                                     </div>
                                                 </div>
-                                                <div class="profile-ud-item">
-                                                    <form action="" method="POST">
-                                                        @csrf
+                                                <div class="profile-ud-item">                                                 
                                                         <div class="profile-ud wider">
 
                                                             <span class="profile-ud-label">Trạng thái đơn hàng</span>
 
-                                                            <select class="form-select" data-id="{{ $bill->id }}"
-                                                                {{ $bill->Status == '2' ? 'disabled' : '' }}
+                                                            <select class="form-select" data-id="{{ $bill->id }}" 
+                                                                data-type="status"
+                                                                data-url="{{ route('order.change') }}"
                                                                 id="order-status">
-                                                                <option value="0"
-                                                                    {{ $bill->Status == '0' ? 'selected' : '' }}>Đang xử
-                                                                    lý</option>
                                                                 <option value="1"
-                                                                    {{ $bill->Status == '1' ? 'selected' : '' }}>Đã hoàn
-                                                                    thành</option>
+                                                                    {{ $bill->status == 1 ? 'selected' : '' }}>Đang xử lý</option>
+                                                                <option value="2"
+                                                                    {{ $bill->status == 2 ? 'selected' : '' }}>Đang vận chuyển</option>
+                                                                <option value="3"
+                                                                    {{ $bill->status == 3 ? 'selected' : '' }}>Đã vận chuyển</option>
+                                                                <option value="4"
+                                                                    {{ $bill->status == 4 ? 'selected' : '' }}>Đã nhận hàng</option>
                                                             </select>
 
                                                         </div>
-                                                    </form>
+                                                </div>
+
+                                                <div class="profile-ud-item">
+                                                        <div class="profile-ud wider">
+
+                                                            <span class="profile-ud-label">Trạng thái thanh toán</span>
+
+                                                            <select class="form-select" data-id="{{ $bill->id }}"
+                                                                     data-type="status_payment" 
+                                                                     data-url="{{ route('order.change') }}"
+                                                                     id="order-status-payment">
+                                                                <option value="1" {{ $bill->status_payment ==  1 ? 'selected' : '' }}>Đã thanh toán</option>
+                                                                <option value="2" {{ $bill->status_payment == 2 ? 'selected' : '' }}>Chưa thanh toán</option>
+                                                            </select>
+
+                                                        </div>
                                                 </div>
 
                                             </div><!-- .profile-ud-list -->
@@ -147,21 +178,18 @@
                                                             <th scope="col">Tên sản phẩm</th>
                                                             <th scope="col">Đơn giá</th>
                                                             <th scope="col">Số lượng</th>
-                                                            <th scope="col">Giảm giá</th>
                                                             <th scope="col">Thành tiền</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach ($billdetail as $item)
+
+                                                        @foreach ($bill->billDetails as $item)
+                                                           
                                                             <tr>
                                                                 <td>{{ $item->product->name }}</td>
-                                                                <td>{{ $item->product->price }}</td>
-                                                                <td>{{ $item->qty }}</td>
-                                                                <td>{{ $item->product->promotion->percent }}%</td>
-
-                                                                <td>{{ number_format($item->total, 0, '', '.') }} đ</td>
-
-                                                                {{-- <td>otto</td> --}}
+                                                                <td>{{ number_format($item->price , 0, '', '.') }} đ</td>
+                                                                <td>{{ $item->amount  }}</td>
+                                                                <td>{{ number_format($item->price * $item->amount, 0, '', '.') }} đ</td>
                                                             </tr>
 
                                                         @endforeach
@@ -171,8 +199,7 @@
                                                                 <div
                                                                     style="float: right; margin-right:105px; font-size: 25px; font-weight: bold;">
                                                                     Tổng tiền:
-                                                                    {{ number_format($billdetail->sum('total'), 0, '', '.') }}
-                                                                    đ
+                                                                    {{ number_format($bill->total_price, 0, '', '.') }} đ
                                                                 </div>
                                                             </td>
 
@@ -195,3 +222,10 @@
     </div>
     <!-- content @e -->
 @endsection
+@push('after-scripts')
+    <script>
+      
+    </script>
+@endpush
+
+

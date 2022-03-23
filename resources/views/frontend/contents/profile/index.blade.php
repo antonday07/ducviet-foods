@@ -15,13 +15,8 @@
                             <div class="col-lg-3 col-md-4">
                                 <div class="myaccount-tab-menu nav" role="tablist">
                                     <a href="#account-info" class="active" data-bs-toggle="tab">Thông tin tài khoản</a>
-                                    
-
-                                    
-
-                                    <a href="{{ route('logout') }}"
-                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng
-                                        xuất</a>
+                                    <a href="#order-info" class="" data-bs-toggle="tab">Đơn hàng của bạn</a>
+                                
                                 </div>
                             </div>
                             <!-- My Account Tab Menu End -->
@@ -30,7 +25,7 @@
                                 <div class="tab-content" id="myaccountContent">
 
                                     <!-- Single Tab Content Start -->
-                                    <div class="tab-pane fade" id="orders" role="tabpanel">
+                                    <div class="tab-pane fade" id="order-info" role="tabpanel">
                                         <div class="myaccount-content">
                                             <h3>Đơn hàng của bạn</h3>
                                             <div class="myaccount-table table-responsive text-center">
@@ -40,19 +35,22 @@
                                                             <th>Mã đơn hàng</th>
                                                             <th>Ngày đặt</th>
                                                             <th>Trạng thái</th>
+                                                            <th>Thanh toán</th>
                                                             <th>Tổng tiền</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>Aug 22, 2018</td>
-                                                            <td>Pending</td>
-                                                            <td>$3000</td>
-                                                            <td><a href="cart.html" class="check-btn sqr-btn ">Xem chi tiết</a></td>
-                                                        </tr>
-                                                        
+                                                        @foreach ($user->bills as $bill)                                                            
+                                                            <tr>
+                                                                <td>#{{ $bill->code_bill }}</td>
+                                                                <td>{{ date('M d, Y', strtotime($bill->date)) }}</td>
+                                                                <td>{{ config('constants.status_order_label')[$bill->status] }}</td>
+                                                                <td>{{ config('constants.status_order_payment_label')[$bill->status_payment] }}</td>
+                                                                <td>{{ number_format($bill->total_price, 0, '', '.') }} đ </td>
+                                                                <td><a href="cart.html" class="check-btn sqr-btn ">Xem chi tiết</a></td>
+                                                            </tr>                                                            
+                                                        @endforeach
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -69,18 +67,34 @@
                                                 {{-- <form action="#"> --}}
                                                 <div class="single-input-item">
                                                     <label for="display-name" class="required">Họ tên :
-                                                        <strong>{{ Auth::user()->name }}</strong>
+                                                        <strong>{{ $user->name }}</strong>
                                                     </label>
 
                                                 </div>
                                                 <div class="single-input-item">
-                                                    <label for="email" class="required">Địa chỉ email:
-                                                        <strong>{{ Auth::user()->email }}</strong>
+                                                    <label for="email" class="required">Email:
+                                                        <strong>{{ $user->email }}</strong>
                                                     </label>
 
                                                 </div>
-                                                <div class="users-img">
-                                                    <img width="250px" class="user-image" src="{{ Auth::user()->image }}"
+                                                @if ($user->phone)
+                                                    <div class="single-input-item">
+                                                        <label for="email" class="required">Số điện thoại:
+                                                            <strong>{{ $user->phone }}</strong>
+                                                        </label>
+
+                                                    </div>
+                                                @endif
+                                                @if ($user->address)
+                                                    <div class="single-input-item">
+                                                        <label for="email" class="required">Địa chỉ:
+                                                            <strong>{{ $user->address }}</strong>
+                                                        </label>
+
+                                                    </div>                                                    
+                                                @endif
+                                                <div class="users-img w-50">
+                                                    <img width="250px" class="user-image" src="{{ $user->avatar ?? asset('images/avatar/user.jpg') }}"
                                                         alt="">
 
                                                 </div>
@@ -97,9 +111,9 @@
                                                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
-                                                        <form action="{{ route('updateProfile', Auth::user()->id) }}"
+                                                        <form action="{{ route('updateProfile', $user->id) }}"
                                                             method="POST" enctype="multipart/form-data">
-                                                            @csrf
+                                                            @csrf   
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title pt-4" id="exampleModalLongTitle">Thay đổi
                                                                     thông tin
@@ -107,19 +121,25 @@
 
                                                             </div>
                                                             <div class="modal-body">
-
+                                                            
                                                                 <label for="name" class="mb-1">Họ tên</label>
-                                                                <input type="text" value="{{ Auth::user()->name }}"
+                                                                <input type="text" value="{{ $user->name }}"
                                                                     id="name" name="name" class="form-control mb-2">
                                                                 <label for="email" class="mb-1">Email:</label>
-                                                                <input type="email" value="{{ Auth::user()->email }}"
+                                                                <input type="email" value="{{ $user->email }}"
                                                                     id="email" readonly class="form-control mb-3">
+                                                                <label for="phone" class="mb-1">Phone:</label>
+                                                                <input type="text" value="{{ $user->phone }}"
+                                                                        id="phone" name="phone" class="form-control mb-3">
+                                                                <label for="address" class="mb-1">Address:</label>
+                                                                <input type="text" value="{{ $user->address }}"
+                                                                        id="address" name="address" class="form-control mb-3">
                                                                 <label for="image" class="mb-1">Ảnh đại diện</label> <br>
                                                                 <img width="250px" class="user-image mb-3"
-                                                                    src="{{ Auth::user()->image }}" alt="">
+                                                                    src="{{ $user->avatar }}" alt="">
                                                                 <input type="file" class="form-control"
                                                                     id="inputGroupFile01"
-                                                                    accept="image/png, image/gif, image/jpeg" name="image">
+                                                                    accept="image/png, image/gif, image/jpeg" name="avatar">
 
                                                             </div>
                                                             <div class="modal-footer">

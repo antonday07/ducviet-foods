@@ -21,7 +21,7 @@
 
                                             <a href="{{ route('promotion.create') }}"
                                                 class="btn btn-primary d-none d-md-inline-flex"><i
-                                                    class="fas fa-plus"></i><span>Add Promotion</span></a>
+                                                    class="fas fa-plus"></i><span>Thêm khuyến mãi</span></a>
                                         </li>
                                     </ul>
                                 </div>

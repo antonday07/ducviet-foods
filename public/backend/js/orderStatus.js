@@ -1,24 +1,57 @@
 $("select#order-status").change(function() {
     let id = $(this).data("id");
     let status = $(this).val();
-    let _token = $('input[name="_token"]').val();
-    console.log(id + "" + status + "" + _token);
+    let type = $(this).data("type");
+    let url = $(this).data("url");
+
+    
     $.ajax({
-        url: "http://127.0.0.1:8000/admin/order/changeStatus",
+        url: url,
         type: "POST",
         data: {
             id: id,
             status: status,
-            _token: _token
+            type: type,
+            _token: $('meta[name="csrf-token"]').attr('content')
         }
     }).done(function(data) {
         if (data == "success") {
-            swal("Thành công!", "Cập nhật trạng thái thành công!", "success");
+            swal.fire("Thành công!", "Cập nhật trạng thái thành công!", "success");
+            window.location.reload();
         } else {
-            swal("Thất bại!", "Cập nhật thất bại!", "error");
+            swal.fire("Thất bại!", "Cập nhật thất bại!", "error");
+            window.location.reload();
         }
     });
 });
+$("select#order-status-payment").change(function() {
+    let id = $(this).data("id");
+    let status = $(this).val();
+    let type = $(this).data("type");
+    let url = $(this).data("url");
+
+    
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: {
+            id: id,
+            status: status,
+            type: type,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        }
+    }).done(function(data) {
+        if (data == "success") {
+            swal.fire("Thành công!", "Cập nhật trạng thái thành công!", "success");
+            window.location.reload();
+        } else {
+            swal.fire("Thất bại!", "Cập nhật thất bại!", "error");
+            window.location.reload();
+        }
+    });
+});
+
+
 
 $("button#cancelOrder").click(function() {
     let id = $(this).data("id");

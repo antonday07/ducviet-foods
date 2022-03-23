@@ -16,6 +16,11 @@ class BillImport extends Model
         return $this->belongsTo(Admin::class, 'employee_id');
     }
 
+    public function productBills()
+    {
+        return $this->hasMany(BillImportDetail::class, 'bill_import_id', 'id');
+    }
+
     public function calTotalPrice(array $data)
     {
         $totalPrice = 0;
@@ -29,5 +34,14 @@ class BillImport extends Model
     public function insertBillImport($data) 
     {
         return $this->create($data);
+    }
+
+    public function getAllBills($request)
+    {
+        $data = $this->with('employee', 'productBills.product.unit', 'productBills.supplier');
+        if(!empty($request->search)) {
+            $data->where('code_bill', 'LIKE', '%' . $request->search . '%');
+        }      
+        return $data->get();
     }
 }

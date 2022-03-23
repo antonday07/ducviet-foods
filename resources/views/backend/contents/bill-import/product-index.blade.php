@@ -8,7 +8,7 @@
                     <div class="nk-block-head nk-block-head-sm">
                         <div class="nk-block-between">
                             <div class="nk-block-head-content">
-                                <h3 class="nk-block-title page-title">Sản phẩm</h3>
+                                <h3 class="nk-block-title page-title">Danh sách sản phẩm đã nhập </h3>
                             </div><!-- .nk-block-head-content -->
                             <div class="nk-block-head-content">
                                 <div class="toggle-wrap nk-block-tools-toggle">
@@ -16,12 +16,31 @@
                                         data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
                                     <div class="toggle-expand-content" data-content="pageMenu">
                                         <ul class="nk-block-tools g-3">
+                                            <li class="w-75">
                                             
+                                                <select class="form-control" id="product_list" name="category_id">
+                                                    <option value="" selected>Chọn sản phẩm</option>
+                                                    @foreach ($products as $item)
+                                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                    @endforeach
+            
+                                                </select>                                           
+                                          
+                                            </li>
+                                            <li class="w-75">                                                
+                                                <select class="form-control" id="supplier_list" name="category_id">
+                                                    <option value="" selected>Chọn nhà cung cấp</option>
+                                                    @foreach ($suppliers as $item)
+                                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                    @endforeach            
+                                                </select>                                    
+                                          
+                                            </li>
+
                                             <li class="nk-block-tools-opt">
 
-                                                <a href="{{ route('product.create') }}"
-                                                    class="btn btn-primary d-none d-md-inline-flex"><i
-                                                        class="fas fa-plus"></i><span>Thêm sản phẩm</span></a>
+                                                <a href="{{ route('bill.import.index') }}"
+                                                    class="btn btn-primary d-none d-md-inline-flex"><span>Đơn nhập hàng</span></a>
                                             </li>
                                         </ul>
                                     </div>
@@ -34,17 +53,20 @@
                             <div class="col-sm-12">
                                 <div class="list-products">
                                     <div class="table-custom">
-                                        <table id="list_products" class="table display" style="width:100%">
+                                        <table id="list_bill" class="table display" style="width:100%">
                                             <thead>
                                                 <tr>
                                                     <th>No</th>
-                                                    <th scope="col">Thumbnail</th>
                                                     <th scope="col">Tên sản phẩm</th>
-                                                    <th scope="col">Giá nhập</th>
-                                                    <th scope="col">Giá bán lẻ</th>
-                                                    <th scope="col">Trạng thái</th>
-                                                    <th scope="col">Hành động</th>
-                                                </tr>
+                                                    <th scope="col">Nhà cung cấp</th>
+                                                    <th scope="col">Số lượng</th>
+                                                    <th scope="col">Đơn vị</th>
+                                                    <th scope="col">Đơn giá</th>
+                                                    <th scope="col">Ngày sản xuất</th>
+                                                    <th scope="col">Ngày hết hạn</th>
+                                                    <th scope="col">Tổng tiền</th>
+                                                    <th scope="col">Ngày nhập</th>
+                                                </tr>   
                                             </thead>
                                         </table>
                                     </div>
@@ -83,7 +105,7 @@
     <script>
         
         // JS script only for render datatable
-        var listProducts = $('#list_products').DataTable({
+        var listBills = $('#list_bill').DataTable({
             responsive: true,
             processing: true,
             serverSide: true,
@@ -93,9 +115,11 @@
             pageLength: 5,
             ajax: {
                 type: "GET",
-                url: '{{ route('product.datatable') }}',
+                url: '{{ route('bill.import.product.datatable') }}',
                 data: function(d){
-                    d._token = '{{ csrf_token() }}'
+                    d._token = '{{ csrf_token() }}',
+                    d.product  = $("#product_list").val(),
+                    d.supplier = $("#supplier_list").val()
                     // d.type = $('.group-appointment .nav-link.active').attr('data-type'),
                     // d.search = $("#filter_search").val(),
                     // d.start_time = $('#appointment_start_time').val(),
@@ -108,14 +132,24 @@
             },
             columns: [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                {data: 'thumbnail', name: 'thumbnail'},
-                {data: 'name', name: 'name'},
-                {data: 'entry_price', name: 'entry_price'},
-                {data: 'retail_price', name: 'retail_price'},
-                { data: 'status', name: 'status'},
-                { data: 'action', name:'action'}
+                {data: 'product_id', name: 'product_id'},
+                {data: 'supplier_id', name: 'supplier_id'},
+                {data: 'amount', name: 'amount'},
+                {data: 'unit', name: 'unit'},
+                {data: 'price', name: 'price'},
+                { data: 'entry_date', name: 'entry_date'},
+                { data: 'expiry_date', name: 'expiry_date'},
+                {data: 'total_price', name: 'total_price'},
+                { data: 'created_at', name: 'created_at'},
             ]
         });
+
+        $('#product_list').on('change', function() {
+            listBills.draw();
+        })  
+        $('#supplier_list').on('change', function() {
+            listBills.draw();
+        })
 
         // delete item product
         $('body').on('click', '.btn-delete-item', deleteConfirmation);

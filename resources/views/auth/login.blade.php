@@ -28,7 +28,7 @@
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                             @enderror
-                                            <input id="password" type="password"
+                                            <input id="password" type="password" placeholder="Mật khẩu"
                                                 class="form-control @error('password') is-invalid @enderror" name="password"
                                                 required autocomplete="current-password">
                                             @error('password')

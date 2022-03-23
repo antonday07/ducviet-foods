@@ -14,20 +14,7 @@ use Yajra\DataTables\Facades\DataTables;
 class OrderController extends Controller
 {
     public function index(Request $request)
-    {
-        // Carbon::setLocale('vi'); // hiển thị ngôn ngữ tiếng việt.
-        // $now = Carbon::now();
-        // $keyword = '';
-        // if ($request->keyword) {
-        //     $keyword = htmlspecialchars($request->keyword);
-        // }
-        // $bills = Bill::where('Phone', 'LIKE', '%' . $keyword . '%');
-        // if ($request->status) {
-        //     $status = $this->bindStatus($request->status);
-        //     $bills = $bills->where('Status', $status);
-        // }
-        // $bills = $bills->orderBy('created_at', 'desc')->paginate(7);
-                
+    {                  
         return view('backend.contents.order.index');
     }
     
@@ -38,8 +25,11 @@ class OrderController extends Controller
         
             return DataTables::of($bills)
             ->addIndexColumn()
+            ->addColumn('code', function($item){
+                return  '#' . $item->code_bill;                                
+             })  
             ->addColumn('customer', function($item){
-               return $item->user->name;                                
+               return $item->bill_name;                                
             })          
             ->addColumn('address', function($item){
                 return $item->delivery_address;
@@ -48,15 +38,16 @@ class OrderController extends Controller
                 $badgeName = [
                     1 => 'badge-info',
                     2 => 'badge-secondary',
-                    3 => 'badge-primary'
+                    3 => 'badge-primary',
+                    4 => 'badge-success'
                 ];
                 return '<span class="badge ' . $badgeName[$item->status] . ' ">' . config('constants.status_order_label')[$item->status] . '</span>';
             })
             ->addColumn('status_payment', function($item){
                 $badgeName = [
                     1 => 'badge-info',
-                    2 => 'badge-secondary',
-                    3 => 'badge-primary'
+                    2 => 'badge-primary',
+                    3 => 'badge-secondary'
                 ];
                 return '<span class="badge ' . $badgeName[$item->status_payment] . ' ">' . config('constants.status_order_payment_label')[$item->status_payment] . '</span>';
             })
@@ -68,8 +59,8 @@ class OrderController extends Controller
             })
             ->addColumn('action', function($item){
                 return view('backend.contents.elements.custom-action-order', [
-                    'routeEdit' => route('order.detail', [$item->id]),
-                    'routeDelete' => route('order.cancel'),
+                    'routeShow' => route('order.detail', [$item->id]),
+                    'routeEdit' => route('order.edit', [$item->id]),
                 ]);
             })
             ->rawColumns(['action', 'status', 'status_payment'])
@@ -78,13 +69,13 @@ class OrderController extends Controller
     }
     public function detail($id)
     {
-        $bill = Bill::find($id);
-        $billdetail = $bill->billDetails;
-        return view('backend.contents.order.detail', compact('bill', 'billdetail'));
+        $bill = Bill::with('billDetails')->where('id', $id)->first();
+        return view('backend.contents.order.detail', compact('bill'));
     }
     public function changeStatus(Request $request)
     {
-        $check = Bill::where('id', $request->id)->update(['Status' => $request->status]);
+      
+        $check = Bill::where('id', $request->id)->update(["$request->type" => $request->status]);
         if ($check == '1') {
             return 'success';
         } else {

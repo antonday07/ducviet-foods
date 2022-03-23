@@ -40,8 +40,7 @@
                                     </div>
                                 </div>   
                                 <div class="col-12">
-                                    <button class="btn btn-primary"><i class="fas fa-plus"></i><span>Edit
-                                            Unit</span></button>
+                                    <button class="btn btn-primary"><i class="fas fa-plus"></i><span>Sửa đơn vị</span></button>
                                 </div>
                             </div>
                         </form>

@@ -39,10 +39,11 @@ class ProductController extends Controller
                 return $product->name;
             })
             ->addColumn('entry_price', function($product){
-                return $product->entry_price . ' VNĐ';
+                return  number_format($product->entry_price, 0,'', '.') . ' đ';
             })
             ->addColumn('retail_price', function($product){
-                return $product->retail_price . ' VNĐ';
+                return  number_format($product->retail_price, 0,'', '.') . ' đ';
+
             })
             ->addColumn('status', function($product){
                 $badgeName = [

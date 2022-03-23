@@ -18,7 +18,7 @@
                                         
                                         <li class="nk-block-tools-opt">
                                             
-                                            <a href="{{ route('unit.create')}}" class="btn btn-primary d-none d-md-inline-flex"><i class="fas fa-plus"></i><span>Add Unit</span></a>
+                                            <a href="{{ route('unit.create')}}" class="btn btn-primary d-none d-md-inline-flex"><i class="fas fa-plus"></i><span>Thêm đơn vị</span></a>
                                         </li>
                                         
                                     </ul>

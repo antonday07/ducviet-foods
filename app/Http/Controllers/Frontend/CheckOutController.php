@@ -24,10 +24,14 @@ class CheckOutController extends Controller
         try {
             DB::beginTransaction();
                 $dataBill = [
+                    'code_bill' => mt_rand(100000000,999999999),
                     'user_id' => auth()->user()->id,
                     'note' => $request->message,
                     'date' => now(),
                     'delivery_address' => $request->address,
+                    "bill_phone" => $request->phone,
+                    "bill_name" => $request->name,
+                    "bill_email" => $request->email,
                     'status' => Bill::ORDER_STATUS,
                     'status_payment' => Bill::UNPAID_STATUS
                 ];

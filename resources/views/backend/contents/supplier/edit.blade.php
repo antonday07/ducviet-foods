@@ -73,7 +73,7 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-12">
-                                    <button class="btn btn-primary"><i class="fas fa-plus"></i><span>Edit</span></button>
+                                    <button class="btn btn-primary"><i class="fas fa-plus"></i><span>Cập nhật</span></button>
                                 </div>
                             </div>
                         </form>
