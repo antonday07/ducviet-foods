@@ -53,13 +53,15 @@
                                         <div class="nk-block">
                                             <div class="nk-block-head">
                                                 <div class="row">
-                                                    <div class="col-10">
+                                                    <div class="col-7">
                                                         @php
                                                              $badgeName = [
-                                                                1 => 'badge-info',
-                                                                2 => 'badge-secondary',
+                                                                1 => 'badge-light',
+                                                                2 => 'badge-info',
                                                                 3 => 'badge-primary',
-                                                                4 => 'badge-success'
+                                                                4 => 'badge-warning',
+                                                                5 => 'badge-success',
+                                                                6 => 'badge-danger',
                                                             ];
 
                                                             $badgeNamePayment = [
@@ -74,17 +76,30 @@
                                                         </h5>
                                                         {{-- <p>Thông tin cơ bản, như tên và địa chỉ giao hàng</p> --}}
                                                     </div>
-                                                    <div class="col-2">
-                                                        {{-- <form action="" method="POST">
-                                                            @csrf
-                                                            <button type="button" data-id="{{ $bill->id }}"
-                                                                value="2"
-                                                                {{ $bill->status == '2' ? 'disabled' : '' }}
-                                                                id="cancelOrder" class="btn btn-danger">Hủy đơn
-                                                                hàng</button>
-                                                        </form> --}}
+                                                    <div class="col-5 d-flex justify-content-end">
+                                                        @if ($bill->status != 6)                                                            
+                                                            <form action="" method="POST" class="mr-2" id="form-cancel-order">
+                                                                @csrf
+                                                                <button type="button" data-id="{{ $bill->id }}"
+                                                                    data-url="{{ route('order.change') }}"
+                                                                    data-status="6"
+                                                                    id="cancelOrder" class="btn btn-danger">Hủy đơn
+                                                                    hàng</button>
+                                                            </form>
+                                                        @endif
 
+                                                        @if ($bill->status == 1) 
+                                                            <form action="" method="POST" id="form-confirm-order">
+                                                                @csrf
+                                                                <button type="button" data-id="{{ $bill->id }}"
+                                                                    data-url="{{ route('order.change') }}"
+                                                                    data-status="2"
+                                                                    
+                                                                    id="confirmOrder" class="btn btn-info">Xác nhận đơn hàng</button>
+                                                            </form>                                                        
+                                                        @endif
                                                     </div>
+                                                  
                                                 </div>
 
                                             </div><!-- .nk-block-head -->
@@ -110,6 +125,14 @@
 
                                                 <div class="profile-ud-item">
                                                     <div class="profile-ud wider">
+                                                        <span class="profile-ud-label">Ghi chú</span>
+                                                        <span class="profile-ud-value">{{ $bill->note }}</span>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="profile-ud-item">
+                                                    <div class="profile-ud wider">
                                                         <span class="profile-ud-label">Ngày đặt hàng</span>
                                                         <span
                                                             class="profile-ud-value">{{ date('d/m/Y', strtotime($bill->date)) }}</span>
@@ -121,29 +144,32 @@
                                                         <span class="profile-ud-value">{{ $bill->bill_name }}</span>
                                                     </div>
                                                 </div>
-                                                <div class="profile-ud-item">                                                 
+                                                {{-- <div class="profile-ud-item">                                                 
                                                         <div class="profile-ud wider">
 
-                                                            <span class="profile-ud-label">Trạng thái đơn hàng</span>
+                                                            <span class="profile-ud-label">Cập nhật trạng thái đơn hàng</span>
 
-                                                            <select class="form-select" data-id="{{ $bill->id }}" 
-                                                                data-type="status"
-                                                                data-url="{{ route('order.change') }}"
-                                                                id="order-status">
-                                                                <option value="1"
-                                                                    {{ $bill->status == 1 ? 'selected' : '' }}>Đang xử lý</option>
-                                                                <option value="2"
-                                                                    {{ $bill->status == 2 ? 'selected' : '' }}>Đang vận chuyển</option>
-                                                                <option value="3"
-                                                                    {{ $bill->status == 3 ? 'selected' : '' }}>Đã vận chuyển</option>
-                                                                <option value="4"
-                                                                    {{ $bill->status == 4 ? 'selected' : '' }}>Đã nhận hàng</option>
-                                                            </select>
-
+                                                            @if ($bill->status == 6)    
+                                                                Đã hủy đơn
+                                                            @else
+                                                                <select class="form-select" data-id="{{ $bill->id }}"                                                                     
+                                                                    data-type="status"
+                                                                    data-url="{{ route('order.change') }}"
+                                                                    id="order-status">
+                                                                    <option selected>Chọn trạng thái</option>                                                         
+                                                                    <option value="3"
+                                                                        {{ $bill->status == 3 ? 'selected' : '' }}>Đang vận chuyển</option>
+                                                                    <option value="4"
+                                                                        {{ $bill->status == 4 ? 'selected' : '' }}>Đã vận chuyển</option>
+                                                                    <option value="5"
+                                                                        {{ $bill->status == 5 ? 'selected' : '' }}>Đã nhận hàng</option>
+                                                                
+                                                                </select>
+                                                            @endif
                                                         </div>
-                                                </div>
+                                                </div> --}}
 
-                                                <div class="profile-ud-item">
+                                                {{-- <div class="profile-ud-item">
                                                         <div class="profile-ud wider">
 
                                                             <span class="profile-ud-label">Trạng thái thanh toán</span>
@@ -152,12 +178,13 @@
                                                                      data-type="status_payment" 
                                                                      data-url="{{ route('order.change') }}"
                                                                      id="order-status-payment">
+                                                                <option selected>Chọn trạng thái</option>
                                                                 <option value="1" {{ $bill->status_payment ==  1 ? 'selected' : '' }}>Đã thanh toán</option>
                                                                 <option value="2" {{ $bill->status_payment == 2 ? 'selected' : '' }}>Chưa thanh toán</option>
                                                             </select>
 
                                                         </div>
-                                                </div>
+                                                </div> --}}
 
                                             </div><!-- .profile-ud-list -->
                                         </div><!-- .nk-block -->

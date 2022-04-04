@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class BillImportDetail extends Model
 {
-    protected $table = 'bill_import_detail';
+    const CLOSE_EXPIRY = 1;
+    const EXPIRED = 2;
 
-    protected $fillable = ["product_id", "bill_import_id", "supplier_id", "amount", "price","total_price" ,"entry_date", "expiry_date"];
+    protected $table = 'bill_import_detail';
+    protected $fillable = ["product_id", "bill_import_id", "supplier_id", "amount", "price","total_price" ,"entry_date", "expiry_date", "sold_quantity"];
     
     public function product()
     {
@@ -23,6 +26,20 @@ class BillImportDetail extends Model
     public function supplier()
     {
         return $this->belongsTo(Supplier::class, 'supplier_id');
+    }
+
+    public function getStatusExpiryAttribute()
+    {
+        $now = Carbon::now();
+        $expiryDate = Carbon::createFromFormat('Y-m-d', $this->expiry_date);
+        $dateDiff = $expiryDate->diffInDays($now);
+        if($dateDiff <= 2) {
+            return self::CLOSE_EXPIRY;
+        } else if($dateDiff < 0) {
+            return self::EXPIRED;
+        } else {
+            return 3;
+        }        
     }
 
     public function insertProductBill($request, int $billId, object $warehouse)

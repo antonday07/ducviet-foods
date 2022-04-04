@@ -6,9 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Bill extends Model
 {
-    const ORDER_STATUS = 1 ;
-    const SHIPPING_STATUS = 2;
-    const SHIPPED_STATUS = 3;
+    const WAIT_CONFIRM_STATUS = 1;
+    const CONFIRMED_STATUS = 2;
+    const SHIPPING_STATUS = 3;
+    const SHIPPED_STATUS = 4;
+    const RECEIVED_STATUS = 5;
+    const CANCEL_STATUS = 6;
 
     const PAID_STATUS = 1 ;
     const UNPAID_STATUS = 2;
@@ -28,6 +31,11 @@ class Bill extends Model
     public function createBill($data)
     {
        return $this->create($data);
+    }
+
+    public function findById($id)
+    {
+        return $this->with('billDetails')->where($this->primaryKey, $id)->first();
     }
 
     public function findAllBill($request)

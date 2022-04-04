@@ -22,6 +22,7 @@
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
 
     <link rel="stylesheet" href="{{ asset('urdan/css/plugins/jquery-ui.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ asset('urdan/css/vendor/pe-icon-7-stroke.css') }}" />
     <link rel="stylesheet" href="{{ asset('urdan/css/custom-css.css')}}">
     {{-- <link rel="stylesheet" href="{{ asset('urdan/css/plugins/animate.css') }}" /> --}}

@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Events\TrackingOrderStatus;
 use App\Http\Controllers\Controller;
 use App\Models\BillDetail;
 use Illuminate\Http\Request;
 use App\Models\Bill;
+use App\Models\BillImportDetail;
 use App\Models\Product;
+use App\Models\Warehouse;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -36,10 +39,12 @@ class OrderController extends Controller
             })
             ->addColumn('status', function($item){
                 $badgeName = [
-                    1 => 'badge-info',
-                    2 => 'badge-secondary',
+                    1 => 'badge-light',
+                    2 => 'badge-info',
                     3 => 'badge-primary',
-                    4 => 'badge-success'
+                    4 => 'badge-warning',
+                    5 => 'badge-success',
+                    6 => 'badge-danger'
                 ];
                 return '<span class="badge ' . $badgeName[$item->status] . ' ">' . config('constants.status_order_label')[$item->status] . '</span>';
             })
@@ -72,14 +77,43 @@ class OrderController extends Controller
         $bill = Bill::with('billDetails')->where('id', $id)->first();
         return view('backend.contents.order.detail', compact('bill'));
     }
-    public function changeStatus(Request $request)
+    public function changeStatus(Request $request, Warehouse $warehouse)
     {
-      
+        $productId = [];
         $check = Bill::where('id', $request->id)->update(["$request->type" => $request->status]);
+        $bill = Bill::with('billDetails')->where('id', $request->id)->first();
+
+        if($request->status == Bill::CONFIRMED_STATUS) {
+            foreach($bill->billDetails as $item) {
+                $productId[] = $item->product_id;
+                $product = $warehouse->findByProductId($item->product_id);
+                
+                if(!empty($product) && $product->quantity <= 0) {
+                    return [
+                        'status' => 'error',
+                        'message' => 'Sản phẩm này đã hết số lượng trong kho'
+                    ];
+                }
+                $quantity = !empty($product) ? $product->quantity - $item->amount : 0;
+        
+                $warehouse->updateWarehouse($item->product_id, $quantity);
+
+                // tăng số lượng của lô hàng đã bán lên 
+            }  
+            // $bills = BillImportDetail::whereIn('product_id', $productId)->where('expiry_date', '<=' Carbon::now())
+            // dd($bills);
+
+        }
         if ($check == '1') {
-            return 'success';
+            return [
+                'status' => 'success',
+                'message' => 'Xác nhận thành công'
+            ];
         } else {
-            return 'error';
+            return [
+                'status' => 'error',
+                'message' => 'Xác nhận thất bại'
+            ];
         }
     }
     public function cancelOrder(Request $request)
@@ -103,5 +137,30 @@ class OrderController extends Controller
         } else if ($status == 'that-bai') {
             return '2';
         }
+    }
+
+
+    public function updateStatusOrder(Request $request)
+    {
+        $request->validate([
+            'order_id' => 'required|exists:bills,id',
+            'status' => 'required|numeric|in:3,4'
+        ]);
+
+        Bill::where('id', $request->order_id)->update([
+            'status' => $request->status
+        ]);
+
+        $bill = Bill::where('id', $request->order_id)->first();
+
+        $message = $request->status == Bill::SHIPPING_STATUS ? 'Đơn hàng đang được vận chuyển' : 'Đơn hàng đã vận chuyển thành công';
+
+        // push notification
+        event(new TrackingOrderStatus($bill, $message));
+
+        return response()->json([
+            'message' => $message, 
+            'status' => 'success'
+        ]);
     }
 }

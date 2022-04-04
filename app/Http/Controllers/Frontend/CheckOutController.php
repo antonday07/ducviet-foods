@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Events\NewOrderComing;
 use App\Events\notification;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -10,6 +11,7 @@ use App\Http\Requests\CheckingInfoRequest;
 use App\Models\Bill;
 use App\Models\BillDetail;
 use App\Models\User;
+use App\Models\Warehouse;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -32,7 +34,7 @@ class CheckOutController extends Controller
                     "bill_phone" => $request->phone,
                     "bill_name" => $request->name,
                     "bill_email" => $request->email,
-                    'status' => Bill::ORDER_STATUS,
+                    'status' => Bill::WAIT_CONFIRM_STATUS,
                     'status_payment' => Bill::UNPAID_STATUS
                 ];
                 $dataUser = [
@@ -47,6 +49,9 @@ class CheckOutController extends Controller
                 $totalPrice = $billDetail->insertBillDetail(session('cart'), $new_bill->id);
                 Bill::where('id', $new_bill->id)->update(['total_price' => $totalPrice]);
             DB::commit();
+            // push notification
+            event(new NewOrderComing($new_bill));
+
             session()->forget('cart');
             flasher(__('web.action_success', ['action' => 'Đặt hàng']), 'success');
             return redirect()->route('product');

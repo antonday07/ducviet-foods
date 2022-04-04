@@ -88,6 +88,18 @@ Route::group(['middleware' => ['auth:admin']], function () {
           
         });
 
+        Route::group(['prefix' => 'shipping'], function () {
+            Route::get('index', 'Backend\ShippingController@index')->name('shipping.index');
+            Route::post('create/token', 'Backend\ShippingController@createToken')->name('create.token');
+            Route::get('datatable', 'Backend\ShippingController@getDatatable')->name('shipping.datatable');
+            Route::get('create', 'Backend\ShippingController@create')->name('shipping.create');
+            Route::post('create', 'Backend\ShippingController@store')->name('shipping.store');
+
+            Route::get('edit/{id}', 'Backend\ShippingController@edit')->name('shipping.edit');
+            Route::post('edit/{id}', 'Backend\ShippingController@update')->name('shipping.update');
+            Route::delete('delete/{id}', 'Backend\ShippingController@delete')->name('shipping.delete');
+        });
+
         Route::group(['prefix' => 'employee'], function () {
             Route::get('index', 'Backend\EmployeeController@index')->name('employee.index');
             Route::get('datatable', 'Backend\EmployeeController@getDatatable')->name('employee.datatable');
@@ -169,5 +181,6 @@ Route::post('add', 'Frontend\CartController@addCart')->name('addtocart');
 
 Route::group(['middleware' => ['auth'], 'prefix' => 'profile'], function () {
     Route::get('/', 'Frontend\ProfileController@index')->name('profile');
+    Route::get('/order/{id}', 'Frontend\ProfileController@viewOrder')->name('order.view');
     Route::post('/update/{id}', 'Frontend\ProfileController@update')->name('updateProfile');
 });

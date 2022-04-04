@@ -94,6 +94,12 @@
                         </a>
                     </li>
                     <li class="nk-menu-item">
+                        <a href="{{ route('shipping.index')}}" class="nk-menu-link">
+                            <span class="nk-menu-icon"><i class="icon ni ni-archived"></i></span>
+                            <span class="nk-menu-text">Vận chuyển</span>
+                        </a>
+                    </li>
+                    <li class="nk-menu-item">
                         <a href="{{ route('customer.index') }}" class="nk-menu-link">
                             <span class="nk-menu-icon"><i class="icon ni ni-users-fill"></i></span>
                             <span class="nk-menu-text">Khách hàng</span>

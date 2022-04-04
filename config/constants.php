@@ -20,10 +20,12 @@ return [
         3 => 'Hết hàng'
     ],
     'status_order_label' => [
-        1 => 'Đang xử lý',
-        2 => 'Đang vận chuyển',
-        3 => 'Đã vận chuyển',
-        4 => 'Đã nhận hàng'
+        1 => 'Chờ xác nhận',
+        2 => 'Đã xác nhận',
+        3 => 'Đang vận chuyển',
+        4 => 'Đã vận chuyển',
+        5 => 'Đã nhận hàng',
+        6 => 'Đã hủy đơn'
     ],
     'status_order_payment_label' => [
         1 => 'Đã thanh toán',

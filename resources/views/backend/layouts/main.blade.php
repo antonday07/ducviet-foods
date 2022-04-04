@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.standalone.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
     <link rel="stylesheet" href="{{ asset('/backend/css/dashlite.css?ver=2.4.0') }}">
     <link rel="stylesheet" href="{{ asset('/backend/css/style.css') }}">
@@ -127,10 +128,68 @@
     <script src="{{ asset('/backend/js/scripts.js?ver=2.4.0') }}"></script>
     <script src="{{ asset('/backend/js/charts/chart-ecommerce.js?ver=2.4.0') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="{{ asset('js/datatables.min.js') }}"></script>
     <script src="{{ asset('js/datatable-basic.init.js') }}"></script>
     <script src="{{ asset('/backend/js/orderStatus.js')}}"></script>
     <script src="{{ asset('/backend/js/custom.js')}}"></script>
+
+        <script>
+            window.laravel_echo_port='{{env("LARAVEL_ECHO_PORT")}}';
+        </script>
+        <script src="//{{ Request::getHost() }}:{{env('LARAVEL_ECHO_PORT')}}/socket.io/socket.io.js"></script>
+        <script src="{{ url('/js/laravel-echo-setup.js') }}" type="text/javascript"></script>
+        
+        <script type="text/javascript">
+            // Listening event when new order coming
+            window.Echo.channel('order.coming')
+            .listen('.OrderComing', (response) => {
+                let url = '{{ route("order.detail", ":id") }}';
+                url = url.replace(':id', response.order.id);
+
+                Toastify({
+                    text: "Có một đơn hàng mới",
+                    duration: 5000,
+                    destination: url,
+                    // newWindow: true,
+                    close: true,
+                    gravity: "top", // `top` or `bottom`
+                    position: "right", // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                        background: "#d63031",
+                    },
+                    onClick: function(){} // Callback after click
+                }).showToast();
+                console.log(response);
+            });
+
+            // Listening event when order change status
+            window.Echo.channel('order.status')
+            .listen('.TrackingOrder', (response) => {
+                let url = '{{ route("order.detail", ":id") }}';
+
+                url = url.replace(':id', response.order.id);
+
+                Toastify({
+                    text: response.message,
+                    duration: 5000,
+                    destination: url,
+                    // newWindow: true,
+                    close: true,
+                    gravity: "top", // `top` or `bottom`
+                    position: "right", // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                    style: {
+                        background: "#d63031",
+                    },
+                    onClick: function(){} // Callback after click
+                }).showToast();
+                
+            });
+
+        </script>
+
     @stack('after-scripts')
     @livewireScripts
 </body>

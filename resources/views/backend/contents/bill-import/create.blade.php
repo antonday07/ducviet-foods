@@ -136,8 +136,8 @@
                                     <div class="row mb-3 box-total-price">
                                         <div class="col-mb-4">
                                             <div class="form-group group-date">
-                                                <label class="form-label" for="date_from">Ngày bắt đầu</label>
-                                                <input type="text" class="form-control date form-input ed-form-input date_from" name="product[0][entry_date]" placeholder="Ngày bắt đầu" value="{{ old('entry_date') }}">
+                                                <label class="form-label" for="date_from">Ngày nhập kho</label>
+                                                <input type="text" class="form-control date form-input ed-form-input date_from" name="product[0][entry_date]" placeholder="Ngày nhập kho" value="{{ old('entry_date') }}">
                                                 <div class="icon-calendar" id="icon_date_left">
                                                     <img src="{{ asset('images/avatar/calendar.svg') }}" alt="">
                                                 </div>
@@ -150,8 +150,8 @@
                                            
                                         <div class="col-mb-4">
                                             <div class="form-group group-date">
-                                                <label class="form-label" for="date_expiry">Ngày kết thúc</label>
-                                                <input type="text" class="form-control date form-input ed-form-input date_expiry" name="product[0][expiry_date]" placeholder="Ngày kết thúc" value="{{ old('expiry_date') }}">
+                                                <label class="form-label" for="date_expiry">Ngày hết hạn</label>
+                                                <input type="text" class="form-control date form-input ed-form-input date_expiry" name="product[0][expiry_date]" placeholder="Ngày hết hạn" value="{{ old('expiry_date') }}">
                                                 <div class="icon-calendar" id="icon_date_left">
                                                     <img src="{{ asset('images/avatar/calendar.svg') }}" alt="">
                                                 </div>

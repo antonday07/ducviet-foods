@@ -22,6 +22,7 @@ class CartController extends Controller
     {
         
             $product = Product::find($request->id);
+
             $id = $request->id;    
             $price = empty($product->promotion) ? $product->retail_price : $product->price_discount; 
            
@@ -114,11 +115,24 @@ class CartController extends Controller
     }
     public function updateCart(Request $request)
     {
+        $product = Product::find($request->id);
         if($request->id and $request->quantity)
         {
+            if(!empty($product->warehouse)) {
+                if($request->quantity > $product->warehouse->quantity) {
+                    return response()->json([
+                        'message' => 'Không đủ số lượng cho mặt hàng này!', 
+                        'status' => 'error',                   
+                    ]);
+                }
+            }
+
+
             $cart = session()->get('cart');
 
             $cart[$request->id]["quantity"] = $request->quantity;
+
+
 
             session()->put('cart', $cart);
 

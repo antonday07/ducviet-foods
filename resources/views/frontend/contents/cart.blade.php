@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-12">
                 <form action="#">
-                    @if ( count(session('cart')) === 0)
+                    @if ( count((array) session('cart')) === 0)
                         <h4>Không có sản phẩm nào trong giỏ hàng</h4>                        
                             <a href="{{ route('product') }}">Tiếp tục mua sắm</a>                        
                     @else

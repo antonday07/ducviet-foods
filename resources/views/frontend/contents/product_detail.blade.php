@@ -62,22 +62,25 @@
                             
                             <div class="single-product-cart btn-hover">
                                 @csrf
-                                    <a href="#" onclick="return false;" data-url_addcart="{{ route('addtocart') }}" id="{{ $id }}" class="product-action-btn-2 add-cart" title="Add To Cart" ><i class="pe-7s-cart"></i> Add to cart</a>
+                                @if ($product->is_out_of_stock == 'in')                                     
+                                    <a href="#" onclick="return false;" data-url_addcart="{{ route('addtocart') }}" id="{{ $id }}" class="product-action-btn-2 add-cart" title="Thêm vào giỏ" ><i class="pe-7s-cart"></i>Thêm vào giỏ</a>
+                                @else
+                                    <a href="#" onclick="return false;" class="product-action-btn-2 add-cart" title="Thêm vào giỏ" ><i class="fas fa-shopping-cart"></i> Hết hàng</a>
+                                @endif
                             </div>
-                            <div class="single-product-wishlist">
+                            {{-- <div class="single-product-wishlist">
                                 <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="product-details-meta">
                             <ul>
                                 <li>
                                     <span class="title">Danh mục: </span> {{ $product->product_category->name }}
                                 </li>
-                                <li><span class="title">Lượng hàng trong kho: </span>{{ $product->qty }}</li>
+                                {{-- <li><span class="title">Lượng hàng trong kho: </span>{{ $product->qty }}</li> --}}
                                 <li>
-                                    <span class="title">Tình trạng sản phẩm: </span> Còn hàng
+                                    Tình trạng sản phẩm:  <span class="title {{ $product->is_out_of_stock == 'in' ? 'in-order' : 'out-of-stock' }}"> {{ $product->is_out_of_stock == 'in' ? ' Còn hàng' : ' Hết hàng' }} </span> 
                                 </li>
-
                             </ul>
                         </div>
                     </div>
@@ -92,7 +95,7 @@
                 <a data-bs-toggle="tab" href="#des-details2" class="">
                     Thông tin sản phẩm
                 </a>
-                <a data-bs-toggle="tab" href="#des-details3" class=""> Cách sử dụng </a>
+                {{-- <a data-bs-toggle="tab" href="#des-details3" class=""> Cách sử dụng </a> --}}
             </div>
             <div class="tab-content">
 

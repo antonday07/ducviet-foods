@@ -26,7 +26,7 @@ class ProductController extends Controller
     public function getDatatable(Request $request)
     {
         if($request->ajax()){
-            $products = Product::all();
+            $products = Product::with('billProductsDetail.billImport', 'billProductsDetail.product.unit', 'billProductsDetail.supplier')->get();
             return DataTables::of($products)
             ->addIndexColumn()
             ->addColumn('thumbnail', function($product){

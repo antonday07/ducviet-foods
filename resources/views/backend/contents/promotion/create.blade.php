@@ -54,18 +54,19 @@
                                             <div class="input-group mb-3">
                                                 <input type="text" name="price"
                                                 class="form-control" id="regular-price" value="{{ old('price') }}">                                                <div class="input-group-append">
-                                                  <span class="input-group-text">VNĐ</span>
+                                                  <span class="input-group-text span-price">VNĐ</span>
+                                                  <span class="input-group-text span-percent d-none">%</span>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-control-wrap box-percent d-none">
+                                        {{-- <div class="form-control-wrap box-percent d-none">
                                             <div class="input-group mb-3">
                                                 <input type="text" name="price" value="{{ old('price') }}" class="form-control" id="stock">
                                                 <div class="input-group-append">
                                                   <span class="input-group-text">%</span>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         @error('price')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -113,7 +114,7 @@
 
                             <div class="row mb-3">
                                 <div class="col-12">
-                                    <button class="btn btn-primary"><i class="fas fa-plus"></i><span>Thêm mới nhà cung cấp</span></button>
+                                    <button class="btn btn-primary"><i class="fas fa-plus"></i><span>Thêm mới </span></button>
                                 </div>
                             </div>
                         </form>
@@ -151,11 +152,11 @@
         $('#type_promotion').on('change', function() {
             let value = $(this).val();
             if(value == 2) {
-                $('.box-price').addClass('d-none');
-                $('.box-percent').removeClass('d-none');
+                $('.span-price').addClass('d-none');
+                $('.span-percent').removeClass('d-none');
             } else {
-                $('.box-percent').addClass('d-none');
-                $('.box-price').removeClass('d-none');
+                $('.span-percent').addClass('d-none');
+                $('.span-price').removeClass('d-none');
             }
         })
     </script>

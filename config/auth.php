@@ -49,7 +49,7 @@ return [
             'driver' => 'token',
             'provider' => 'users',
             'hash' => false,
-        ],
+        ]
     ],
 
     /*

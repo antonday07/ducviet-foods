@@ -53,6 +53,55 @@
                         </div>
                     </div><!-- .nk-block -->
 
+                     <!-- Modal -->
+                    <div class="modal fade" id="modalViewBill" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                     <div class="modal-dialog modal-dialog-centered" role="document">
+                         <div class="modal-content" style="min-width: 500px; padding: 20px">
+                             <div class="mb-3">
+                                 <h4 class="title text-center">Các lô hàng của sản phẩm</h4>
+                                 <div class="box-note d-flex justify-content-center">
+                                    <div class="box-note-circle circle-yellow">Màu vàng: là lô sắp hết hạn</div>
+                                    <div class="box-note-circle circle-red">Màu đỏ: là lô đã hết hạn</div>
+                                 </div> 
+                             </div>
+                             <div class="box-empty-product d-none">
+                                 <p class="text-center">Sản phẩm này chưa có lô hàng nào</p>
+                             </div>
+                             {{-- <div class="box-bill-detail mb-3">
+                                 <p>Mã đơn hàng: <span class="bill-code"></span></p>
+                                 <p>Nhân vien nhập: <span class="bill-employee"></span></p>
+                                 <p>Ghi chú: <span class="bill-note"></span></p>
+                                 <p>Ngày nhập: <span class="bill-date"></span></p>
+                             </div> --}}
+                             <div class="box-bill-product box-list-product-detail">
+                                 <div class="myaccount-table table-responsive text-center">
+                                     <table class="table table-bordered">
+                                         <thead class="thead-light">
+                                             <tr>
+                                                 <th>Mã</th>
+                                                 <th>Tên sản phẩm</th>
+                                                 <th>Nhà cung cấp</th>
+                                                 <th>Số lượng</th>
+                                                 <th>Số lượng đã bán</th>
+                                                 <th>Đơn giá</th>
+                                                 <th>Đơn vị</th>
+                                                 <th>Ngày sản xuất</th>
+                                                 <th>Ngày hết hạn</th>
+                                                 <th>Tổng tiền</th>
+                                                 <th>Hành động</th>
+                                             </tr>
+                                         </thead>
+                                         <tbody class="product-bills">
+                                             
+                                         </tbody>
+                                     </table>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+
                 </div>
             </div>
         </div>
@@ -82,6 +131,9 @@
 @push('after-scripts')
     <script>
         
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ".");
+        }
         // JS script only for render datatable
         var listProducts = $('#list_products').DataTable({
             responsive: true,
@@ -116,6 +168,58 @@
                 { data: 'action', name:'action'}
             ]
         });
+
+        
+        // show modal view detail
+        $('body').on('click', '.btn-view-detail', function() {
+            let listProduct = '';           
+            let products = $(this).data('object'); 
+
+            if(products.length > 0 ) {
+
+                $('.box-bill-product').removeClass('d-none');
+                $('.box-empty-product').addClass('d-none');
+
+                products.forEach(ele => {
+                    let today = new Date();
+                    let expiryDate = new Date(ele.expiry_date);
+                    let diffTime = expiryDate.getTime() - today.getTime();    
+                    let diffDay = parseInt(diffTime / (1000 * 3600 * 24));
+                    let className = (diffDay <= 2 && diffDay > 0 ) ? 'row-yellow' : (diffDay <= 0 ? 'row-red' : ''); 
+
+                    console.log(today, expiryDate, diffDay);
+                    listProduct += `
+                        <tr class="${className}">
+                            <td>#${ele.bill_import.code_bill}</td>
+                            <td>#${ele.product.name}</td>
+                            <td>${ele.supplier.name}</td>
+                            <td>${ele.amount}</td>
+                            <td>${ele.sold_quantity}</td>
+                            <td>${numberWithCommas(ele.price)} đ</td>
+                            <td>${ele.product.unit.name}</td>
+                            <td>${ele.entry_date}</td>
+                            <td>${ele.expiry_date}</td>
+                            <td>${numberWithCommas(ele.total_price)} đ</td>
+                            <td>
+                                <button class="btn btn-danger" title="Thanh lý lô hàng">
+                                    <i class="fas fa-trash-alt "></i> 
+                                </button>
+                            </td>
+                        </tr>                                                            
+                    ` ;
+                });
+    
+                $('.product-bills').html(listProduct);
+            } else {
+                $('.box-bill-product').addClass('d-none');
+                $('.box-empty-product').removeClass('d-none');
+            }
+            console.log(products);
+
+                                             
+         //   $('#modalViewBill').show();          
+        });
+
 
         // delete item product
         $('body').on('click', '.btn-delete-item', deleteConfirmation);

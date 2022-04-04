@@ -48,7 +48,7 @@
                                                                 <td>{{ config('constants.status_order_label')[$bill->status] }}</td>
                                                                 <td>{{ config('constants.status_order_payment_label')[$bill->status_payment] }}</td>
                                                                 <td>{{ number_format($bill->total_price, 0, '', '.') }} đ </td>
-                                                                <td><a href="cart.html" class="check-btn sqr-btn ">Xem chi tiết</a></td>
+                                                                <td><a href="{{ route('order.view', ['id' => $bill->id]) }}" class="check-btn sqr-btn ">Xem chi tiết</a></td>
                                                             </tr>                                                            
                                                         @endforeach
                                                     </tbody>

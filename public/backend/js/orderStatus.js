@@ -55,39 +55,85 @@ $("select#order-status-payment").change(function() {
 
 $("button#cancelOrder").click(function() {
     let id = $(this).data("id");
-    let status = $(this).val();
-    let _token = $('input[name="_token"]').val();
-    swal({
-        title: "Xác nhận xóa?",
-        text: "Nếu xóa, bạn sẽ không thể hoàn tác",
+    let status = $(this).data("status");
+    let type = 'status';
+    let url = $(this).data("url");
+  
+    swal.fire({
+        title: "Xác nhận hủy đơn?",
+        text: "Nếu hủy, bạn sẽ không thể hoàn tác",
         icon: "warning",
-        buttons: true,
-        dangerMode: true
+        type: "warning",
+        showCancelButton: !0,
+        confirmButtonText: "Hủy đơn",
+        cancelButtonText: "Khum",        
     }).then(willDelete => {
-        if (willDelete) {
-            swal("Hủy đơn hàng thành công", {
-                icon: "success"
-            });
+        console.log(willDelete);
+        if (willDelete.value == true) {
+            // swal("Hủy đơn hàng thành công", {
+            //     icon: "success"
+            // });
             $.ajax({
-                url: "http://127.0.0.1:8000/admin/order/cancelOrder",
+                url: url,
                 type: "POST",
                 data: {
                     id: id,
                     status: status,
-                    _token: _token
+                    type: type,
+                    _token: $('meta[name="csrf-token"]').attr('content')
                 }
-            }).done(function(data) {
-                // if (data == "success") {
-                //     swal("Thành công!", "Cập nhật trạng thái thành công!", "success");
-                // } else {
-                //     swal("Thất bại!", "Cập nhật thất bại!", "error");
-                // }
-                window.location =
-                    "http://127.0.0.1:8000/admin/order/detail/" + id;
-                console.log(data);
+            }).done(function(data) {           
+                if (data.status == "success") {
+                    swal.fire("Thành công!", "Hủy đơn thành công!", "success");
+                    window.location.reload();
+                } else {
+                    swal.fire("Thất bại!", "Hủy đơn thất bại!", "error");
+                    window.location.reload();
+                }              
             });
         } else {
-            swal("Hủy thao tác thành công!");
+            willDelete.dismiss
+        }
+    });
+});
+
+$("button#confirmOrder").click(function() {
+    let id = $(this).data("id");
+    let status = $(this).data("status");
+    let type = 'status';
+    let url = $(this).data("url");
+  
+    swal.fire({
+        title: "Xác nhận đơn hàng?",
+        text: "Xác nhận đơn hàng mới",
+        icon: "info",
+        type: "info",
+        showCancelButton: !0,
+        confirmButtonText: "Xác nhận",
+        cancelButtonText: "Hủy",        
+    }).then(willDelete => {
+        console.log(willDelete);
+        if (willDelete.value == true) {           
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: {
+                    id: id,
+                    status: status,
+                    type: type,
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                }
+            }).done(function(data) {           
+                if (data.status == "success") {
+                    swal.fire("Thành công!", "Xác nhận thành công!", "success");
+                    window.location.reload();
+                } else {
+                    swal.fire("Thất bại!", data.message, "error");
+                    window.location.reload();
+                }              
+            });
+        } else {
+            willDelete.dismiss
         }
     });
 });

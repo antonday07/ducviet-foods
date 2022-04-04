@@ -118,7 +118,7 @@
                                     <div class="pay-top sin-payment sin-payment-3">
                                         <input id="payment-method-4" class="input-radio" type="radio" value="2"
                                             name="payment_method" />
-                                        <label for="payment-method-4">PayPal
+                                        <label for="payment-method-4">Thanh toán online (VNPAY)
                                         </label>
                                         <div class="payment-box payment_method_bacs">
                                             <p>

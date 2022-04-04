@@ -14,11 +14,16 @@ $(".qty").change(function() {
             _token: _token
         }
     }).done(function(response) {
-        let subtotal = numberWithCommas(response.subTotal) + " đ";
-        let total = numberWithCommas(response.total) + " đ";
-        $("#header_cart").html(response.data);
-        $("span.subtotal-" + id).html(subtotal);
-        $("span.total").html(total);  
+        if (response.status == "success") {
+            let subtotal = numberWithCommas(response.subTotal) + " đ";
+            let total = numberWithCommas(response.total) + " đ";
+            $("#header_cart").html(response.data);
+            $("span.subtotal-" + id).html(subtotal);
+            $("span.total").html(total);  
+        } else {
+            swal(response.status, response.message, "error");
+        }
+       
     });
    
 });

@@ -43,10 +43,41 @@ body {
   font-size: 15px; }
 
 .modal-dialog {
-  max-width: 900px; }
+  max-width: 1000px; }
+
+.modal-content {
+  min-height: 300px; }
 
 .table td,
 .table th {
   padding: 10px 5px 10px 5px; }
+
+.box-note .box-note-circle {
+  position: relative;
+  margin: 0 30px; }
+
+.box-note .box-note-circle::before {
+  position: absolute;
+  content: "";
+  top: 16%;
+  left: -19px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%; }
+
+.box-note .box-note-circle.circle-yellow::before {
+  background-color: #f7ce04;
+  border: 1px solid #f7ce04; }
+
+.box-note .box-note-circle.circle-red::before {
+  background-color: #eb1111;
+  border: 1px solid #eb1111; }
+
+.box-list-product-detail table tr.row-yellow {
+  background-color: #f7ce04; }
+
+.box-list-product-detail table tr.row-red {
+  background-color: #eb1111;
+  color: #fff; }
 
 /*# sourceMappingURL=style.css.map */

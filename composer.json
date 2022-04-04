@@ -15,10 +15,12 @@
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^7.2.0",
         "laravel/framework": "^7.0",
+        "laravel/sanctum": "^2.15",
         "laravel/tinker": "^2.0",
         "laravel/ui": "2.4",
         "livewire/livewire": "^2.10",
         "php-flasher/flasher-laravel": "^0.9.6",
+        "predis/predis": "^1.1",
         "pusher/pusher-php-server": "^7.0",
         "yajra/laravel-datatables-oracle": "^9.19"
     },

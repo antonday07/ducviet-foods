@@ -184,6 +184,7 @@
             let note = $(this).data('note'); 
             let date = $(this).data('date'); 
             let products = $(this).data('object'); 
+            
 
             $('.bill-code').text(codeBill);
             $('.bill-employee').text(employee);

@@ -16,7 +16,7 @@ class Product extends Model
     protected $fillable = ["unit_id", "category_id", "promotion_id", "supplier_id", "name", "slug", "entry_price", "retail_price", "description", "status", "image"];
     public function product_category()
     {
-        return $this->belongsTo(ProductCategory::class, 'category_id');
+        return $this->belongsTo(ProductCategory::class, 'category_id', 'id');
     }
     public function promotion()
     {
@@ -39,6 +39,11 @@ class Product extends Model
     public function billDetails()
     {
         return $this->hasMany(BillDetail::class);
+    }
+
+    public function billProductsDetail()
+    {
+        return $this->hasMany(BillImportDetail::class, 'product_id', 'id');
     }
 
     public function warehouse()

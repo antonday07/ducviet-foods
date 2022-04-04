@@ -32,7 +32,7 @@ class ProductRequest extends FormRequest
             'slug' => ['required', 'string', 'min:5', 'max:50'],
             'unit_id' => "required|exists:units,id",
             'category_id' => "required|exists:categories,id",
-            'promotion_id' => "required|exists:promotions,id",
+            'promotion_id' => "nullable",
             'supplier_id' => "required|exists:suppliers,id",
             'image' => [$requiredImage, 'image'],
             'entry_price' => ['required', 'numeric'],
