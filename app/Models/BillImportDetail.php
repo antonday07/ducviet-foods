@@ -85,6 +85,6 @@ class BillImportDetail extends Model
             });
         }
 
-        return $data->get();
+        return $data->orderBy('created_at', 'desc')->get();
     }
 }

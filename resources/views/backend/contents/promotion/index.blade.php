@@ -23,6 +23,8 @@
                                                 class="btn btn-primary d-none d-md-inline-flex"><i
                                                     class="fas fa-plus"></i><span>Thêm khuyến mãi</span></a>
                                         </li>
+
+                                   
                                     </ul>
                                 </div>
                             </div>
@@ -97,6 +99,7 @@
                 { data: 'action', name:'action'}
             ]
         });
+
 
         // delete item product
         $('body').on('click', '.btn-delete-item', deleteConfirmation);

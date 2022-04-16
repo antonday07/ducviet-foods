@@ -81,6 +81,42 @@
                          
                         </ul>
                     </li>
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-icon"><i class="icon ni ni-files-fill"></i></span>
+                            <span class="nk-menu-text">Báo cáo thống kê</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item">
+                                <a href="{{ route('report.index.income') }}" class="nk-menu-link">
+                                    <span class="nk-menu-icon"><i class="icon ni ni-cc-alt"></i></span>
+                                    <span class="nk-menu-text">Thống kê doanh thu</span>
+                                </a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{{ route('report.index.product') }}" class="nk-menu-link">
+                                    <span class="nk-menu-icon"><i class="icon ni ni-package"></i></span>
+                                    <span class="nk-menu-text">Thống kê sản phẩm tồn kho</span>
+                                </a>
+                            </li>        
+                            {{-- <li class="nk-menu-item">
+                                <a href="{{ route('report.index.order') }}" class="nk-menu-link">
+                                    <span class="nk-menu-icon"><i class="icon ni ni-edit"></i></span>
+                                    <span class="nk-menu-text">Thống kê đơn hàng</span>
+                                </a>
+                            </li> --}}
+
+                            {{-- <li class="nk-menu-item">
+                                <a href="{{ route('report.index.warehouse') }}" class="nk-menu-link">
+                                    <span class="nk-menu-icon"><i class="icon ni ni-folder"></em></i></span>
+                                    <span class="nk-menu-text">Thống kê hàng tồn</span>
+                                </a>
+                            </li> --}}
+                         
+                        </ul>
+                    </li>
+
+                  
                     <li class="nk-menu-item">
                         <a href="{{ route('warehouse.index')}}" class="nk-menu-link">
                             <span class="nk-menu-icon"><i class="icon ni ni-view-x6"></i></span>

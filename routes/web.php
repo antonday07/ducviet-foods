@@ -88,6 +88,19 @@ Route::group(['middleware' => ['auth:admin']], function () {
           
         });
 
+        // Thống kê doanh thu, sản phẩm. đơn hàng, hàng tồn
+
+        Route::group(['prefix' => 'report'], function () {
+            Route::get('list-income', 'Backend\ReportController@indexIncome')->name('report.index.income');
+            Route::get('list-product', 'Backend\ReportController@indexProduct')->name('report.index.product');
+            Route::get('list-order', 'Backend\ReportController@indexOrder')->name('report.index.order');
+            Route::get('list-warehouse', 'Backend\ReportController@indexWarehouse')->name('report.index.warehouse');
+            Route::get('datatable-income', 'Backend\ReportController@getDatatableIncome')->name('report.datatable.income');
+            Route::get('datatable-product', 'Backend\ReportController@getDatatableProduct')->name('report.datatable.product');
+            Route::get('datatable-order', 'Backend\ReportController@getDatatableOrder')->name('report.datatable.order');
+            Route::get('datatable-warehouse', 'Backend\ReportController@getDatatableWarehouse')->name('report.datatable.warehouse');
+        });
+
         Route::group(['prefix' => 'shipping'], function () {
             Route::get('index', 'Backend\ShippingController@index')->name('shipping.index');
             Route::post('create/token', 'Backend\ShippingController@createToken')->name('create.token');

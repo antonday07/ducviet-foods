@@ -40,13 +40,13 @@ class Bill extends Model
 
     public function findAllBill($request)
     {
-        $data = $this->with('user');
+        $data = $this->with('user', 'billDetails.product');
         if(!empty($request->search)) {
             $data->where('bill_name', 'LIKE', '%' . $request->search . '%');
-        }      
+        }       
         if(!empty($request->status_change) && $request->status_change != 5) {
             $data->where('status', $request->status_change);
         }
-        return $data->get();
+        return $data->orderBy('created_at', 'desc')->get();
     }
 }

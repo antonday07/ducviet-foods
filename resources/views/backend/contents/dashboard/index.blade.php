@@ -24,11 +24,11 @@
                                             </div>
                                             
                                             <div class="card-tools">
-                                                <a href="#" class="link">Xem báo cáo</a>
+                                                <a href="{{  route('report.index.income') }}" class="link">Xem báo cáo</a>
                                             </div>
                                         </div>
                                         <div class="data">
-                                            <div class="amount">100 đ</div>
+                                            <div class="amount">{{ number_format($total, 0, '', '.') }} đ</div>
                                             <div class="card-title mt-4">
                                                 <h6 class="title">Doanh thu tháng {{ $now }} </h6>
                                             </div>

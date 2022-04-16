@@ -46,9 +46,9 @@ $(".add-cart").click(function() {
     }).done(function(response) {
         if (response.status == "success") {
             $("#header_cart").html(response.data);
-            swal(response.status, response.message, "success");
+            swal("Thành công", response.message, "success");
         } else if (response.status == "error") {
-            swal(response.status, response.message, "error");
+            swal("Có lỗi", response.message, "error");
         } else {
             swal(response.message, {
                 buttons: {

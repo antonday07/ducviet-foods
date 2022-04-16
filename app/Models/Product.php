@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Libraries\Ultilities;
 use Illuminate\Database\Eloquent\Model;
+use PhpParser\Node\Expr\FuncCall;
 
 class Product extends Model
 {
@@ -79,6 +80,26 @@ class Product extends Model
         } else {
             return $this->retail_price - $this->retail_price * ($price / 100);
         }
+    }
+
+    public function getListProduct($request)
+    {
+        $data = $this->with('unit', 'billProductsDetail', 'billDetails');
+        if(!empty($request->search)) {
+            $data->where('name', 'LIKE', '%' . $request->search . '%');
+        }
+        if(!empty($request->month) && !empty($request->year)) {
+            
+            $data->whereHas('billDetails', function($query) use ($request) { 
+                $query->whereMonth('created_at', $request->month)
+                     ->whereYear('created_at', $request->year);
+            })->orWhereHas('billProductsDetail', function($query) use ($request) {
+                $query->whereMonth('created_at', $request->month)
+                ->whereYear('created_at', $request->year);
+            });
+        }  
+
+        return $data->get();
     }
 
 }

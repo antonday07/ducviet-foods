@@ -29,7 +29,7 @@
                                     <ul class="nav nav-tabs nav-tabs-mb-icon nav-tabs-card">
                                         <li class="nav-item">
                                             <a class="nav-link active" href="#"><i
-                                                    class="fas fa-user-tag mr-1"></i><span>Thông tin đơn hàng</span></a>
+                                                    class="fas fa-user-tag mr-1"></i><span>Thông tin đơn hàng - {{ $bill->id }}</span></a>
                                         </li>
 
                                         {{-- <li class="nav-item">

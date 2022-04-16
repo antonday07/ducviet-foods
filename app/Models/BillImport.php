@@ -42,6 +42,6 @@ class BillImport extends Model
         if(!empty($request->search)) {
             $data->where('code_bill', 'LIKE', '%' . $request->search . '%');
         }      
-        return $data->get();
+        return $data->orderBy('created_at', 'desc')->get();
     }
 }
